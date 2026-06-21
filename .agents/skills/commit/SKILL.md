@@ -13,10 +13,34 @@ Stage relevant changes and create a commit following this project's emoji + conv
 ## Steps
 
 1. Run `git status` and `git diff` to understand current changes
-2. Determine the commit type and choose the matching emoji
-3. Write a concise Chinese commit message (1-2 sentences)
-4. Stage the relevant files (prefer specific files over `git add -A`)
-5. Commit with the format: `<emoji> <type>: <description>`
+2. Check `git remote -v` and `git branch -vv` before staging when the repository has both private and public remotes
+3. Determine the commit type and choose the matching emoji
+4. Write a concise Chinese commit message (1-2 sentences)
+5. Stage the relevant files (prefer specific files over `git add -A`)
+6. Commit with the format: `<emoji> <type>: <description>`
+
+## Private / public repository policy
+
+This repository can have two remotes:
+
+- Private: `git@github.com:robots-hub/dive-into-embodied-ai.git` (`origin`)
+- Public: `git@github.com:datawhalechina/dive-into-embodied-ai.git` (`public`)
+
+Keep public-safe project changes synchronized across both repositories. AI collaboration traces must remain private-only and must not be included in commits intended for the public repository.
+
+Treat these paths as private AI traces:
+
+- `AGENTS.md`
+- `CLAUDE.md`
+- `.claude/`
+- `.codex/`
+- `.cursor/`
+- `.cursor/skills/`
+- `.agents/`
+- `.agents/skills/`
+- `.agents/skills/commit/`
+
+If a working tree contains both public-safe changes and private AI traces, split them into separate commits. Stage public-safe files separately and keep that commit usable for both remotes. Stage private AI traces in a private-only commit and push it only to `origin`. Never push a commit containing the private AI trace paths above to the `public` remote.
 
 ## Emoji mapping
 
