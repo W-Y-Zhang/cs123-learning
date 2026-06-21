@@ -8,6 +8,7 @@ build/
 .env*.local
 npm-debug.log*
 __pycache__
+.venv/
 .vscode
 
 # Lab 6 brax/MJX scratch scripts (eval / render / plotting helpers)
