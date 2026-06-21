@@ -125,6 +125,36 @@ git lfs pull
 - `docs/CLAUDE#anchor` broken anchor（既有）
 - GIF / LFS 图片读取警告，通常与本地 LFS 状态有关
 
+## 双远程仓库（private 主开发 / public 对外镜像）
+
+本仓库走双远程：日常在私有库开发，对外只同步一份**剥离 AI 协作痕迹**的镜像。**本节只存在于 private，public 看不到。**
+
+| 远程 | 仓库 | 定位 | 含 AI 文件 |
+| :--- | :--- | :--- | :--- |
+| `origin` | `robots-hub/dive-into-embodied-ai` | private，主开发 | 是 |
+| `public` | `datawhalechina/dive-into-embodied-ai` | public，对外镜像 | 否 |
+
+分支：
+
+- `master` → 跟踪 `origin/master`，私有主开发分支，保留全部 AI 文件
+- `public-mirror` → 跟踪 `public/master`，对外镜像，顶上一个「删除 AI 文件」提交（分支名特意区别于远程名 `public`，避免 git 歧义）
+
+「AI 痕迹」指 `**/CLAUDE.md`、`**/AGENTS.md`、`.agents/`、`.claude/`、`.codex/`、`.cursor/`，在 `public-mirror` 上从索引移除并写进 `.gitignore`。这些只能进 private，**不要推到 public**。
+
+日常开发在 `master` 上 `git push`（默认走 private）。需要对外时同步镜像：
+
+```bash
+git checkout public-mirror
+git merge master          # AI 文件保持删除；只有改动过它们才会 modify/delete 冲突，按"删除"解决
+git push public public-mirror:master
+git checkout master
+```
+
+注意：
+
+- public 的**历史**里仍残留早期 AI 文件，本策略只从切换点起对外移除，不改写历史。
+- 对 public 做覆盖式更新需 `git push ... --force-with-lease`，且 public 有外部贡献者，force push 前务必确认远程 tip 没被别人推进。
+
 ## 文档写作风格
 
 详见 [docs/CLAUDE.md](docs/CLAUDE.md)。简要：
