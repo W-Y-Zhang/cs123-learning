@@ -46,7 +46,25 @@ MODEL_PATH = _DIR / "models" / "pupper_v3_floating.xml"
 # To experiment with other postures, change any of these 12 entries. Remember
 # that the left-side HFE / KFE limits are mirrored (see §4.2.1 in the chapter),
 # so non-zero left-leg targets typically need flipped signs.
-STAND_POSE = np.zeros(12, dtype=np.float64)
+#
+# Example — a symmetric deep squat. Measured to settle at base z ~0.075 m
+# (~45 mm below the z ~0.120 m home stance) while still passing the <5 mm
+# stability check, so the drop is obvious next to view_pupper_v3_floating.py:
+#     STAND_POSE = np.array([
+#         0.0, -0.6,  0.6,   # front_r: HAA, HFE, KFE
+#         0.0,  0.6, -0.6,   # front_l (mirrored signs)
+#         0.0, -0.6,  0.6,   # back_r
+#         0.0,  0.6, -0.6,   # back_l
+#     ])
+# STAND_POSE = np.zeros(12, dtype=np.float64)
+
+# 深蹲
+STAND_POSE = np.array([
+        0.0, -0.6,  0.6,   # front_r: HAA, HFE, KFE
+        0.0,  0.6, -0.6,   # front_l (mirrored signs)
+        0.0, -0.6,  0.6,   # back_r
+        0.0,  0.6, -0.6,   # back_l
+    ])
 
 
 def _load_model(path: pathlib.Path) -> tuple[mujoco.MjModel, mujoco.MjData]:
