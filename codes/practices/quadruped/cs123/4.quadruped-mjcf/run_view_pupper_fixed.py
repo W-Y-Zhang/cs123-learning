@@ -1,8 +1,8 @@
 """Inspect the Lab 4 fixed-base Pupper model in MuJoCo viewer.
 
 Run from this directory with:
-    mjpython view_pupper_v3_fixed.py      # macOS
-    python view_pupper_v3_fixed.py        # Linux / Windows
+    mjpython run_view_pupper_fixed.py      # macOS
+    python run_view_pupper_fixed.py        # Linux / Windows
 """
 
 from __future__ import annotations

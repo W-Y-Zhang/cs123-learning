@@ -1,10 +1,10 @@
 """Inspect the Lab 4 floating-base Pupper model in MuJoCo viewer.
 
 Run from this directory with:
-    mjpython view_pupper_v3_floating.py    # macOS
-    python view_pupper_v3_floating.py      # Linux / Windows
+    mjpython run_view_pupper.py    # macOS
+    python run_view_pupper.py      # Linux / Windows
 
-Unlike view_pupper_v3_fixed.py, the main loop here calls mj_step instead of
+Unlike run_view_pupper_fixed.py, the main loop here calls mj_step instead of
 mj_forward, so the simulator actually evolves gravity and contacts. You should
 see the robot fall from z=0.28 m, the feet touch the ground, and the position
 servo pull the 12 leg joints back toward their home targets.
@@ -13,7 +13,7 @@ macOS note: do not run ``mjpython -m mujoco.viewer --mjcf=...`` — mjpython
 already imports ``mujoco.viewer`` during startup (to claim the GUI main
 thread), so re-executing it via ``-m``/runpy raises
 ``RuntimeError: Caught an unknown exception!`` at ``_Simulate(...)``. Use the
-script entry (``mjpython view_pupper_v3_floating.py``) to bypass this.
+script entry (``mjpython run_view_pupper.py``) to bypass this.
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ import mujoco.viewer
 
 _DIR = pathlib.Path(__file__).parent
 
-MODEL_PATH = _DIR / "models" / "pupper_v3_floating.xml"
+MODEL_PATH = _DIR / "models" / "pupper_v3.xml"
 
 
 def _load_model(path: pathlib.Path) -> tuple[mujoco.MjModel, mujoco.MjData]:

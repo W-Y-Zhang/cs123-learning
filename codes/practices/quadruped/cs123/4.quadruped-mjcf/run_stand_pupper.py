@@ -1,10 +1,10 @@
 """Make the floating-base Pupper stand still under PD position servo.
 
 Run from this directory with:
-    mjpython stand_pupper_v3_floating.py    # macOS
-    python stand_pupper_v3_floating.py      # Linux / Windows
+    mjpython run_stand_pupper.py    # macOS
+    python run_stand_pupper.py      # Linux / Windows
 
-This extends view_pupper_v3_floating.py with two pieces:
+This extends run_view_pupper.py with two pieces:
 
 * A target pose STAND_POSE that is written into ``data.ctrl`` every step, so
   the position servo pulls the legs into a "knee-bent, body up" stand instead
@@ -14,7 +14,7 @@ This extends view_pupper_v3_floating.py with two pieces:
   Lab 4.5 pass criterion (std < 5 mm).
 
 macOS note: do not run ``mjpython -m mujoco.viewer --mjcf=...``; see the
-docstring of view_pupper_v3_floating.py for the underlying mjpython + runpy
+docstring of run_view_pupper.py for the underlying mjpython + runpy
 issue.
 """
 
@@ -32,7 +32,7 @@ import mujoco.viewer
 
 _DIR = pathlib.Path(__file__).parent
 
-MODEL_PATH = _DIR / "models" / "pupper_v3_floating.xml"
+MODEL_PATH = _DIR / "models" / "pupper_v3.xml"
 
 # Actuator order: front_r {1,2,3}, front_l {1,2,3}, back_r {1,2,3}, back_l {1,2,3}.
 #
@@ -49,7 +49,7 @@ MODEL_PATH = _DIR / "models" / "pupper_v3_floating.xml"
 #
 # Example — a symmetric deep squat. Measured to settle at base z ~0.075 m
 # (~45 mm below the z ~0.120 m home stance) while still passing the <5 mm
-# stability check, so the drop is obvious next to view_pupper_v3_floating.py:
+# stability check, so the drop is obvious next to run_view_pupper.py:
 #     STAND_POSE = np.array([
 #         0.0, -0.6,  0.6,   # front_r: HAA, HFE, KFE
 #         0.0,  0.6, -0.6,   # front_l (mirrored signs)

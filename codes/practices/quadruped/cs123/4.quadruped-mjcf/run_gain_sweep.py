@@ -1,13 +1,13 @@
 """4.6 小节用的 gainprm / biasprm 参数扫描脚本。
 
 在本目录运行：
-    python gain_sweep_quick.py
+    python run_gain_sweep.py
 
 macOS 上如果要打开 viewer 单独看一组参数，用：
-    mjpython gain_sweep_quick.py --viewer default
+    mjpython run_gain_sweep.py --viewer default
 
 默认批量模式不会修改 XML 文件。脚本会为每一组参数重新加载
-``models/pupper_v3_floating.xml``，只在内存里改 MuJoCo 编译后的 actuator
+``models/pupper_v3.xml``，只在内存里改 MuJoCo 编译后的 actuator
 参数，然后输出：
 
 * outputs/gain_sweep_summary.csv
@@ -45,7 +45,7 @@ from PIL import Image, ImageDraw
 
 
 HERE = pathlib.Path(__file__).resolve().parent
-MODEL_PATH = HERE / "models" / "pupper_v3_floating.xml"
+MODEL_PATH = HERE / "models" / "pupper_v3.xml"
 DEFAULT_OUT_DIR = HERE / "outputs"
 
 FRAME_SIZE = (360, 270)

@@ -76,31 +76,31 @@ uv run python 3.inverse-kinematics/render_dls_convergence_gif.py
 静态查看固定基座模型，机器人不动：
 
 ```bash
-uv run python 4.quadruped-mjcf/view_pupper_v3_fixed.py
+uv run python 4.quadruped-mjcf/run_view_pupper_fixed.py
 # MacOS 上开窗口必须用 mjpython，Linux / Windows 换成 python
-# uv run mjpython 4.quadruped-mjcf/view_pupper_v3_fixed.py
+# uv run mjpython 4.quadruped-mjcf/run_view_pupper_fixed.py
 ```
 
 浮动基座自由落地，位置伺服把腿拉回 home（纯观察，不打印）：
 
 ```bash
-uv run python 4.quadruped-mjcf/view_pupper_v3_floating.py
+uv run python 4.quadruped-mjcf/run_view_pupper.py
 # MacOS 上开窗口必须用 mjpython，Linux / Windows 换成 python 
-# uv run mjpython 4.quadruped-mjcf/view_pupper_v3_floating.py
+# uv run mjpython 4.quadruped-mjcf/run_view_pupper.py
 ```
 
 同上，但站姿锁到可改的 STAND_POSE，关窗打印稳定性判据（std<5mm 算站稳）：
 
 ```bash
-uv run python 4.quadruped-mjcf/stand_pupper_v3_floating.py
+uv run python 4.quadruped-mjcf/run_stand_pupper.py
 # MacOS 上开窗口必须用 mjpython，Linux / Windows 换成 python
-# uv run mjpython 4.quadruped-mjcf/stand_pupper_v3_floating.py
+# uv run mjpython 4.quadruped-mjcf/run_stand_pupper.py
 ```
 
 PD 调参对比扫描，出 CSV / 图 / GIF（无窗口）：
 
 ```bash
-uv run python 4.quadruped-mjcf/gain_sweep_quick.py
+uv run python 4.quadruped-mjcf/run_gain_sweep.py
 ```
 
 ### 5.gait-control
