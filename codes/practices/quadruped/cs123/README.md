@@ -105,11 +105,12 @@ uv run python 4.quadruped-mjcf/run_gain_sweep.py
 
 ### 5.gait-control
 
-渲染原地 / 前进步态 GIF（默认 trot，可选 walk / bound / gallop）：
+渲染原地 / 前进步态 GIF（默认 trot，可选 walk / pace / bound / gallop）：
 
 ```bash
 uv run python 5.gait-control/run_gait_control.py
 uv run python 5.gait-control/run_gait_control.py --gait walk
+uv run python 5.gait-control/run_gait_control.py --gait pace
 uv run python 5.gait-control/run_gait_control.py --gait bound
 uv run python 5.gait-control/run_gait_control.py --gait gallop
 ```
@@ -119,5 +120,29 @@ uv run python 5.gait-control/run_gait_control.py --gait gallop
 ```bash
 # macOS 必须用 mjpython；Linux / Windows 把 mjpython 换成 python
 uv run mjpython 5.gait-control/run_gait_control.py --gait walk --viewer inplace
+uv run mjpython 5.gait-control/run_gait_control.py --gait pace --viewer forward
 uv run mjpython 5.gait-control/run_gait_control.py --gait gallop --viewer forward
 ```
+
+### 6.rl_pupper
+
+运行环境和奖励函数冒烟测试：
+
+```bash
+uv run pytest -q 6.rl_pupper/tests
+uv run python 6.rl_pupper/pupper_env.py
+```
+
+训练 PPO 速度跟踪策略，先用短训练确认流程：
+
+```bash
+uv run python 6.rl_pupper/train.py --timesteps 100000 --n-envs 4
+```
+
+加载 checkpoint，生成命令演示 GIF 和速度跟踪图：
+
+```bash
+uv run python 6.rl_pupper/evaluate.py
+```
+
+训练参数和控制设计见 [`6.rl_pupper/README.md`](6.rl_pupper/README.md)。

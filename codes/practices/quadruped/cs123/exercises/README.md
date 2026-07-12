@@ -1,9 +1,9 @@
 # CS123 Lab
 
-这里放 8 个配套 Lab。章节正文里的"演示"是作者带你跑代码；章末的
+这里集中放置各章配套 Lab。章节正文里的"演示"是作者带你跑代码；章末的
 `Lab` 是你自己写、自己跑、最后放进作品集的任务。
 
-## 8 Lab 总览
+## Lab 总览
 
 | 章 | Lab | 作品集产物 |
 |---|---|---|
@@ -11,7 +11,6 @@
 | Ch2 FK | `lab_2_fk_teleop` | `leg_teleop.gif` + 单腿工作空间图 |
 | Ch3 IK | `lab_3_stepping` | `leg_stepping.gif` |
 | Ch4 URDF | `lab_4_urdf_surgery` | `pupper_zoo.gif` + PD 调参图 |
-| Ch5 步态 | `lab_5_gait_zoo` | `gait_zoo.gif` |
 | Ch6 RL | `lab_6_rl_pupper` | `rl_pupper_commands.gif` + PPO checkpoint |
 | Ch7 LLM | `lab_7_llm_control` | 5 张任务卡 GIF + 消息轨迹 |
 | Ch8 视觉 | `lab_8_ball_chase` | `ball_chase.gif` |
@@ -21,7 +20,7 @@
 - **演示**: 章节正文里的完整代码和现象，作者带你看，照跑即可。
 - **思考**: 不写代码的概念题，一段话回答。
 - **Lab**: 章末延伸任务，你自己写、自己跑、有产出。
-- **作品集**: 8 个 Lab 的成果合订本，课程结束后留档。
+- **作品集**: 各 Lab 的成果合订本，课程结束后留档。
 
 ## 共享资产
 

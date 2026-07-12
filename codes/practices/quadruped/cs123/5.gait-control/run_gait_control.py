@@ -2,7 +2,7 @@
 
 管线：`pupper_ik` 的数值 IK 把足端轨迹反解成关节角 → 写进真实模型自带的位置
 伺服 → MjSpec 加的 base weld 把机身固定住 → 离屏渲染成 GIF。支持 walk、trot、
-bound 和 gallop，原地与前进实验只差步长和是否平移焊接点。可在 MuJoCo viewer 中交互
+pace、bound 和 gallop，原地与前进实验只差步长和是否平移焊接点。可在 MuJoCo viewer 中交互
 预览，也可离屏渲染 GIF 到本目录 `outputs/`。
 
 在 cs123 目录下运行：
@@ -20,7 +20,7 @@ from pathlib import Path
 
 import mujoco
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pupper_ik import (  # noqa: E402
@@ -39,6 +39,9 @@ HEIGHT = 540
 FPS = 24
 SETTLE_SECONDS = 0.35
 RENDER_SECONDS = 3.0
+COMPARISON_GAITS = ("walk", "pace", "bound", "gallop")
+COMPARISON_PANEL_SIZE = (400, 300)
+COMPARISON_GAP = 4
 
 
 @dataclass(frozen=True)
@@ -73,6 +76,18 @@ GAITS = {
         Gait(
             key="trot",
             phase_offsets={"FL": 0.0, "FR": 0.5, "RL": 0.5, "RR": 0.0},
+            duty=0.50,
+            inplace_t_cycle=0.4,
+            forward_t_cycle=0.5,
+            inplace_step_height=0.030,
+            forward_step_height=0.035,
+            forward_step_length=0.050,
+            weld_speed=0.10,
+        ),
+        # 侧对步：同侧前后腿同相，左右两组错半个周期。
+        Gait(
+            key="pace",
+            phase_offsets={"FL": 0.0, "FR": 0.5, "RL": 0.0, "RR": 0.5},
             duty=0.50,
             inplace_t_cycle=0.4,
             forward_t_cycle=0.5,
@@ -189,14 +204,6 @@ def gait_step(
     return target
 
 
-def add_label(frame: np.ndarray, text: str) -> Image.Image:
-    image = Image.fromarray(frame).convert("RGB")
-    draw = ImageDraw.Draw(image, "RGBA")
-    draw.rounded_rectangle((18, 18, 470, 68), radius=10, fill=(255, 255, 255, 218))
-    draw.text((34, 34), text, fill=(20, 30, 40, 255))
-    return image
-
-
 def make_camera() -> mujoco.MjvCamera:
     camera = mujoco.MjvCamera()
     camera.type = mujoco.mjtCamera.mjCAMERA_FREE
@@ -292,7 +299,7 @@ def render_experiment(experiment: Experiment) -> None:
             camera.lookat[:] = data.xpos[base_id]
             camera.lookat[2] = max(float(camera.lookat[2]), 0.09)
             renderer.update_scene(data, camera=camera)
-            frames.append(add_label(renderer.render(), experiment.name))
+            frames.append(Image.fromarray(renderer.render()).convert("RGB"))
             next_frame_time += 1.0 / FPS
     finally:
         renderer.close()
@@ -308,6 +315,64 @@ def render_experiment(experiment: Experiment) -> None:
     )
     std_mm = float(np.std(base_z[-int(round(1.0 / model.opt.timestep)):])) * 1000.0
     print(f"saved {experiment.output} ({len(frames)} frames, base z std={std_mm:.2f} mm)")
+
+
+def save_gait_comparison(output: Path) -> None:
+    """渲染 walk / pace / bound / gallop 的前进实验，并拼成 2×2 GIF。"""
+    source_paths = []
+    for gait_key in COMPARISON_GAITS:
+        experiment = make_experiments(GAITS[gait_key])["forward"]
+        render_experiment(experiment)
+        source_paths.append(experiment.output)
+
+    panel_width, panel_height = COMPARISON_PANEL_SIZE
+    panel_frames: list[list[Image.Image]] = []
+    for path in source_paths:
+        frames = []
+        with Image.open(path) as source:
+            # GIF 时间精度为 10 ms，每隔一帧取样得到约 12 FPS。
+            for frame_index in range(0, source.n_frames, 2):
+                source.seek(frame_index)
+                frame = source.convert("RGB").resize(
+                    COMPARISON_PANEL_SIZE,
+                    Image.Resampling.LANCZOS,
+                )
+                frames.append(frame)
+        panel_frames.append(frames)
+
+    frame_count = min(len(frames) for frames in panel_frames)
+    canvas_width = 2 * panel_width + 2 * COMPARISON_GAP
+    canvas_height = 2 * panel_height + 2 * COMPARISON_GAP
+    positions = (
+        (COMPARISON_GAP // 2, COMPARISON_GAP // 2),
+        (panel_width + 3 * COMPARISON_GAP // 2, COMPARISON_GAP // 2),
+        (COMPARISON_GAP // 2, panel_height + 3 * COMPARISON_GAP // 2),
+        (panel_width + 3 * COMPARISON_GAP // 2, panel_height + 3 * COMPARISON_GAP // 2),
+    )
+
+    comparison_frames = []
+    for frame_index in range(frame_count):
+        canvas = Image.new("RGB", (canvas_width, canvas_height), "white")
+        for frames, position in zip(panel_frames, positions, strict=True):
+            canvas.paste(frames[frame_index], position)
+        comparison_frames.append(
+            canvas.quantize(
+                colors=128,
+                method=Image.Quantize.MEDIANCUT,
+                dither=Image.Dither.FLOYDSTEINBERG,
+            )
+        )
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    comparison_frames[0].save(
+        output,
+        save_all=True,
+        append_images=comparison_frames[1:],
+        duration=80,
+        loop=0,
+        optimize=True,
+    )
+    print(f"saved {output} ({frame_count} frames, 2x2 gait comparison)")
 
 
 def view_experiment(experiment: Experiment) -> int:
@@ -362,11 +427,19 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="使用 --viewer 时仍先生成两段 GIF",
     )
+    parser.add_argument(
+        "--comparison",
+        action="store_true",
+        help="生成 walk / pace / bound / gallop 的 2×2 前进步态对比 GIF",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
+    if args.comparison:
+        save_gait_comparison(OUT_DIR / "lab5_forward_gait_comparison.gif")
+        return 0
     experiments = make_experiments(GAITS[args.gait])
     if args.gif or args.viewer is None:
         for experiment in experiments.values():
