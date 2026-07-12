@@ -177,6 +177,26 @@ const sidebars: SidebarsConfig = {
         { type: 'link', label: '两轮足 Flamingo · Isaac Lab', href: '/docs/practices/wheel-legged/flamingo-isaaclab/preview' },
       ],
     },
+    {
+      type: 'category',
+      label: 'AMD 专区',
+      collapsed: false,
+      items: [
+        { type: 'link', label: '玩转CS123机器人控制', href: '/docs/practices/amd/cs123/intro' },
+      ],
+    },
+  ],
+
+  practicesAmdSidebar: [
+    {
+      type: 'category',
+      label: 'AMD 专区',
+      link: { type: 'doc', id: 'practices/amd/intro' },
+      collapsible: false,
+      items: [
+        { type: 'doc', id: 'practices/amd/cs123/intro', label: '玩转CS123机器人控制' },
+      ],
+    },
   ],
 
   practicesRobotArmSidebar: [

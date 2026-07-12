@@ -1,8 +1,8 @@
 """Inspect the Lab 4 fixed-base Pupper model in MuJoCo viewer.
 
 Run from this directory with:
-    mjpython view_pupper_v3_fixed.py      # macOS
-    python view_pupper_v3_fixed.py        # Linux / Windows
+    mjpython run_view_pupper_fixed.py      # macOS
+    python run_view_pupper_fixed.py        # Linux / Windows
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ import mujoco.viewer
 
 _DIR = pathlib.Path(__file__).parent
 
-MODEL_PATH = _DIR / "models" / "pupper_v3_fixed.xml"
+MODEL_PATH = _DIR.parent / "assets" / "mjcfs" / "pupper_v3_fixed.xml"
 
 def _load_model(path: pathlib.Path) -> tuple[mujoco.MjModel, mujoco.MjData]:
     """Load the MJCF model and put it into the home keyframe if available."""

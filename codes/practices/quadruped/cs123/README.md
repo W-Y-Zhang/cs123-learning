@@ -76,37 +76,73 @@ uv run python 3.inverse-kinematics/render_dls_convergence_gif.py
 静态查看固定基座模型，机器人不动：
 
 ```bash
-uv run python 4.quadruped-mjcf/view_pupper_v3_fixed.py
+uv run python 4.quadruped-mjcf/run_view_pupper_fixed.py
 # MacOS 上开窗口必须用 mjpython，Linux / Windows 换成 python
-# uv run mjpython 4.quadruped-mjcf/view_pupper_v3_fixed.py
+# uv run mjpython 4.quadruped-mjcf/run_view_pupper_fixed.py
 ```
 
 浮动基座自由落地，位置伺服把腿拉回 home（纯观察，不打印）：
 
 ```bash
-uv run python 4.quadruped-mjcf/view_pupper_v3_floating.py
+uv run python 4.quadruped-mjcf/run_view_pupper.py
 # MacOS 上开窗口必须用 mjpython，Linux / Windows 换成 python 
-# uv run mjpython 4.quadruped-mjcf/view_pupper_v3_floating.py
+# uv run mjpython 4.quadruped-mjcf/run_view_pupper.py
 ```
 
 同上，但站姿锁到可改的 STAND_POSE，关窗打印稳定性判据（std<5mm 算站稳）：
 
 ```bash
-uv run python 4.quadruped-mjcf/stand_pupper_v3_floating.py
+uv run python 4.quadruped-mjcf/run_stand_pupper.py
 # MacOS 上开窗口必须用 mjpython，Linux / Windows 换成 python
-# uv run mjpython 4.quadruped-mjcf/stand_pupper_v3_floating.py
+# uv run mjpython 4.quadruped-mjcf/run_stand_pupper.py
 ```
 
 PD 调参对比扫描，出 CSV / 图 / GIF（无窗口）：
 
 ```bash
-uv run python 4.quadruped-mjcf/gain_sweep_quick.py
+uv run python 4.quadruped-mjcf/run_gain_sweep.py
 ```
 
 ### 5.gait-control
 
-渲染原地踏步 / 前进 trot 两段 GIF：
+渲染原地 / 前进步态 GIF（默认 trot，可选 walk / pace / bound / gallop）：
 
 ```bash
-uv run python 5.gait-control/render_gait_experiment_gifs.py
+uv run python 5.gait-control/run_gait_control.py
+uv run python 5.gait-control/run_gait_control.py --gait walk
+uv run python 5.gait-control/run_gait_control.py --gait pace
+uv run python 5.gait-control/run_gait_control.py --gait bound
+uv run python 5.gait-control/run_gait_control.py --gait gallop
 ```
+
+在 MuJoCo 中交互预览：
+
+```bash
+# macOS 必须用 mjpython；Linux / Windows 把 mjpython 换成 python
+uv run mjpython 5.gait-control/run_gait_control.py --gait walk --viewer inplace
+uv run mjpython 5.gait-control/run_gait_control.py --gait pace --viewer forward
+uv run mjpython 5.gait-control/run_gait_control.py --gait gallop --viewer forward
+```
+
+### 6.rl_pupper
+
+运行环境和奖励函数冒烟测试：
+
+```bash
+uv run pytest -q 6.rl_pupper/tests
+uv run python 6.rl_pupper/pupper_env.py
+```
+
+训练 PPO 速度跟踪策略，先用短训练确认流程：
+
+```bash
+uv run python 6.rl_pupper/train.py --timesteps 100000 --n-envs 4
+```
+
+加载 checkpoint，生成命令演示 GIF 和速度跟踪图：
+
+```bash
+uv run python 6.rl_pupper/evaluate.py
+```
+
+训练参数和控制设计见 [`6.rl_pupper/README.md`](6.rl_pupper/README.md)。
