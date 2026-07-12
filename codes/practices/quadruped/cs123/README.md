@@ -105,8 +105,19 @@ uv run python 4.quadruped-mjcf/run_gain_sweep.py
 
 ### 5.gait-control
 
-渲染原地踏步 / 前进 trot 两段 GIF：
+渲染原地 / 前进步态 GIF（默认 trot，可选 walk / bound / gallop）：
 
 ```bash
-uv run python 5.gait-control/render_gait_experiment_gifs.py
+uv run python 5.gait-control/run_gait_control.py
+uv run python 5.gait-control/run_gait_control.py --gait walk
+uv run python 5.gait-control/run_gait_control.py --gait bound
+uv run python 5.gait-control/run_gait_control.py --gait gallop
+```
+
+在 MuJoCo 中交互预览：
+
+```bash
+# macOS 必须用 mjpython；Linux / Windows 把 mjpython 换成 python
+uv run mjpython 5.gait-control/run_gait_control.py --gait walk --viewer inplace
+uv run mjpython 5.gait-control/run_gait_control.py --gait gallop --viewer forward
 ```
