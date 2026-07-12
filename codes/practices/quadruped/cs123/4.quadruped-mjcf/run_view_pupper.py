@@ -28,7 +28,7 @@ import mujoco.viewer
 
 _DIR = pathlib.Path(__file__).parent
 
-MODEL_PATH = _DIR / "models" / "pupper_v3.xml"
+MODEL_PATH = _DIR.parent / "assets" / "mjcfs" / "pupper_v3.xml"
 
 
 def _load_model(path: pathlib.Path) -> tuple[mujoco.MjModel, mujoco.MjData]:

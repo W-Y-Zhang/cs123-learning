@@ -1,6 +1,6 @@
-"""真实 Pupper v3 的单腿数值 IK / FK（本目录自包含，不依赖 shared.kinematics）。
+"""真实 Pupper v3 的单腿数值 IK / FK（不依赖 shared.kinematics）。
 
-§5 步态 demo 直接跑真实 mesh 模型 `models/pupper_v3.xml`。真实模型的关节
+§5 步态 demo 直接跑公共 mesh 模型 `assets/mjcfs/pupper_v3.xml`。真实模型的关节
 是「固定 body 四元数 + 局部 z 轴 hinge」，零角=屈膝站姿，左右腿镜像——解析
 玩具 IK 无法套用。这里用 MuJoCo 自身求解：设关节角 → `mj_forward` → 读
 `foot_site` → `mj_jacSite` 取雅可比 → DLS 迭代。模型精确，四条腿自动正确，
@@ -15,7 +15,12 @@ import mujoco
 import numpy as np
 
 
-MODEL_PATH = pathlib.Path(__file__).with_name("models") / "pupper_v3.xml"
+MODEL_PATH = (
+    pathlib.Path(__file__).resolve().parent.parent
+    / "assets"
+    / "mjcfs"
+    / "pupper_v3.xml"
+)
 
 # 对外统一用 FL/FR/RL/RR + HAA/HFE/KFE；映射到真实模型的 body/joint/site 命名。
 LEG_ORDER = ("FL", "FR", "RL", "RR")

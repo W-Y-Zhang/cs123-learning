@@ -17,7 +17,7 @@ from gymnasium import spaces
 
 
 LAB_DIR = Path(__file__).resolve().parent
-MODEL_PATH = str(LAB_DIR.parent / "4.quadruped-mjcf" / "models" / "pupper_v3.xml")
+MODEL_PATH = str(LAB_DIR.parent / "assets" / "mjcfs" / "pupper_v3.xml")
 
 JOINT_NAMES = [
     "leg_front_r_1", "leg_front_r_2", "leg_front_r_3",

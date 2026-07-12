@@ -6,15 +6,13 @@
 
 ```
 4.quadruped-mjcf/
-├── models/
-│   ├── pupper_v3.xml           # 浮动基座模型（默认，带 freejoint）
-│   ├── pupper_v3_fixed.xml     # 固定基座模型（base_link 焊死）
-│   └── meshes/                 # STL 网格资源
 ├── run_view_pupper_fixed.py    # §4.3 看固定基座（mj_forward 静态）
 ├── run_view_pupper.py          # §4.4 看浮动基座（mj_step 落地 + 伺服拉回）
 ├── run_stand_pupper.py         # §4.5 让浮动基座站住并判稳
 └── run_gain_sweep.py           # §4.6 扫 gainprm / biasprm 看刚度
 ```
+
+模型和 STL 网格统一存放在 `../assets/mjcfs/`，供第 4、5、6 章共用。
 
 两份模型只差一个 `<freejoint/>`：`pupper_v3.xml` 给 `base_link` 加了浮动关节，机身有 6 个被动 DoF、会受重力（`nq=19, nu=12`）；`pupper_v3_fixed.xml` 把机身焊在世界里，只留 12 个驱动关节，方便先把腿单独调通。
 

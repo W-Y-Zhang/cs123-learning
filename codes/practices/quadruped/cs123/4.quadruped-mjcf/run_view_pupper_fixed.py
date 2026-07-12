@@ -17,7 +17,7 @@ import mujoco.viewer
 
 _DIR = pathlib.Path(__file__).parent
 
-MODEL_PATH = _DIR / "models" / "pupper_v3_fixed.xml"
+MODEL_PATH = _DIR.parent / "assets" / "mjcfs" / "pupper_v3_fixed.xml"
 
 def _load_model(path: pathlib.Path) -> tuple[mujoco.MjModel, mujoco.MjData]:
     """Load the MJCF model and put it into the home keyframe if available."""

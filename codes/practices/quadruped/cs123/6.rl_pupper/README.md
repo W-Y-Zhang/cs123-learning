@@ -2,7 +2,7 @@
 
 自包含的四足 Pupper 强化学习步态控制示例：Gymnasium 环境、SB3 PPO 训练与评估渲染。
 
-代码复用第 4 章的 `../4.quadruped-mjcf/models/pupper_v3.xml`，不重复存放 MJCF 和 mesh。
+代码复用课程公共资源 `../assets/mjcfs/pupper_v3.xml`，不在本目录重复存放 MJCF 和 mesh。
 
 ## 环境准备
 

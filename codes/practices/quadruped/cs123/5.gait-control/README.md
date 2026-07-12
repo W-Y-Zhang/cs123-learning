@@ -1,14 +1,11 @@
-# 5. 步态控制 · 配套 demo（自包含）
+# 5. 步态控制 · 配套 demo
 
-在**真实 Pupper v3**（§4 的 mesh 模型）上跑开环 walk、trot、pace、bound 和 gallop，支持 MuJoCo 交互预览和 GIF 离屏渲染。整个目录自包含：模型、网格、IK、运行脚本都在这里，只依赖 `mujoco` / `numpy` / `Pillow`，不引用 `exercises/shared`。
+在**真实 Pupper v3**（§4 的 mesh 模型）上跑开环 walk、trot、pace、bound 和 gallop，支持 MuJoCo 交互预览和 GIF 离屏渲染。模型和网格来自课程公共资源 `../assets/mjcfs/`，代码只依赖 `mujoco`、`numpy` 和 `Pillow`，不引用 `exercises/shared`。
 
 ## 目录结构
 
 ```
 5.gait-control/
-├── models/
-│   ├── pupper_v3.xml            # 真实 Pupper（与 §4 本体一致，meshdir 指向本地 meshes）
-│   └── meshes/                  # STL 网格（Git LFS）
 ├── pupper_ik.py                 # 真实模型的单腿数值 IK / FK + 建仿真模型（加 weld / 调伺服）
 ├── run_gait_control.py          # 步态时钟 + 足端轨迹 + viewer + GIF
 ├── pupper_gait_demo.xml         # 旧简化模型，仅供章节正文引用，本 demo 不再使用

@@ -32,7 +32,7 @@ import mujoco.viewer
 
 _DIR = pathlib.Path(__file__).parent
 
-MODEL_PATH = _DIR / "models" / "pupper_v3.xml"
+MODEL_PATH = _DIR.parent / "assets" / "mjcfs" / "pupper_v3.xml"
 
 # Actuator order: front_r {1,2,3}, front_l {1,2,3}, back_r {1,2,3}, back_l {1,2,3}.
 #
