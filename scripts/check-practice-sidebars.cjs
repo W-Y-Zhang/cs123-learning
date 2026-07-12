@@ -80,6 +80,7 @@ assert.ok(sidebars.practicesOverviewSidebar, 'practicesOverviewSidebar should ex
 assert.ok(sidebars.practicesCs123CourseSidebar, 'practicesCs123CourseSidebar should exist');
 assert.ok(sidebars.practicesLerobotCourseSidebar, 'practicesLerobotCourseSidebar should exist');
 assert.ok(sidebars.practicesSo101CourseSidebar, 'practicesSo101CourseSidebar should exist');
+assert.ok(sidebars.practicesAmdSidebar, 'practicesAmdSidebar should exist');
 
 const cs123Refs = collectSidebarRefs(sidebars.practicesCs123CourseSidebar);
 assert.ok(
@@ -108,6 +109,13 @@ assert.deepEqual(
   'SO-101 course sidebar should only include its own document',
 );
 
+const amdRefs = collectSidebarRefs(sidebars.practicesAmdSidebar);
+assert.deepEqual(
+  amdRefs,
+  ['practices/amd/intro', 'practices/amd/cs123/intro'],
+  'AMD sidebar should only include its section overview and CS123 project',
+);
+
 for (const docPath of listDocs(path.join(rootDir, 'docs/practices/quadruped/cs123'))) {
   assertDisplayedSidebar(docPath, 'practicesCs123CourseSidebar');
 }
@@ -121,5 +129,9 @@ assertDisplayedSidebar(
   path.join(rootDir, 'docs/practices/robot-arm/data-collection/so101-lerobot-real/index.md'),
   'practicesSo101CourseSidebar',
 );
+
+for (const docPath of listDocs(path.join(rootDir, 'docs/practices/amd'))) {
+  assertDisplayedSidebar(docPath, 'practicesAmdSidebar');
+}
 
 console.log('Practice course sidebars are isolated.');

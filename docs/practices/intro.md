@@ -23,3 +23,7 @@ sidebar_position: 1
 - [LeRobot 中文课程讲义](./robot-arm/data-collection/lerobot-course)：机器人学习与 LeRobot 工具链主线。
 - [SO-101 + LeRobot 真机教程](./robot-arm/data-collection/so101-lerobot-real)：从硬件连接到策略回放的最小真机流程。
 - [两轮足 Flamingo · Isaac Lab](./wheel-legged/flamingo-isaaclab/preview)：Isaac Lab + rsl_rl 训练两轮足策略，导出 ONNX 后在 MuJoCo 中零样本验证。
+
+## AMD 专区
+
+- [玩转CS123机器人控制](./amd/cs123/intro)：面向 AMD 平台的 CS123 机器人控制项目入口。

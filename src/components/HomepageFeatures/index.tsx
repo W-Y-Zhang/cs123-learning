@@ -24,7 +24,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: '项目实战',
-    description: '机械臂、四足、人形、移动操作四类可展示项目。',
+    description: '机械臂、四足、人形、移动操作项目与 AMD 专区。',
     link: '/docs/practices/intro',
     eyebrow: 'Build labs',
     icon: Bot,

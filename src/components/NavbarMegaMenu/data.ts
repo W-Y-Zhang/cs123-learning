@@ -212,7 +212,7 @@ export const megaMenus: MegaMenuConfig[] = [
     id: 'practices',
     label: '项目实战',
     activeBasePaths: ['/docs/practices'],
-    panelWidth: 940,
+    panelWidth: 1240,
     columns: [
       {
         title: '课程入口',
@@ -301,6 +301,20 @@ export const megaMenus: MegaMenuConfig[] = [
             to: '/docs/practices/mobile-manipulation/placeholder',
             activeBasePath: '/docs/practices/mobile-manipulation',
             keywords: ['Navigation', 'VLN', 'Mobile Manip'],
+          },
+        ],
+      },
+      {
+        title: 'AMD 专区',
+        items: [
+          {
+            icon: '🐕',
+            title: '玩转CS123机器人控制',
+            description: '面向 AMD 平台的 CS123 机器人控制项目入口。',
+            to: '/docs/practices/amd/cs123/intro',
+            activeBasePath: '/docs/practices/amd/cs123',
+            keywords: ['AMD', 'CS123', '机器人控制'],
+            featured: true,
           },
         ],
       },
