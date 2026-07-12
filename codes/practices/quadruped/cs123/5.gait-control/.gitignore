@@ -1,0 +1,3 @@
+# 渲染产物，可由 render_gait_experiment_gifs.py 重新生成
+outputs/
+__pycache__/

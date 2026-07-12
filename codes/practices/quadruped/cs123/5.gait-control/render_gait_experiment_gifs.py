@@ -1,3 +1,13 @@
+"""在真实 Pupper v3 上渲染 §5 的两个开环 trot 实验 GIF（本目录自包含）。
+
+管线：`pupper_ik` 的数值 IK 把足端轨迹反解成关节角 → 写进真实模型自带的位置
+伺服 → MjSpec 加的 base weld 把机身固定住 → 离屏渲染成 GIF。原地 trot 与前进
+trot 只差 `step_length` 和是否平移焊接点。产物写到本目录 `outputs/`。
+
+在 cs123 目录下运行：
+    uv run python 5.gait-control/render_gait_experiment_gifs.py
+"""
+
 from __future__ import annotations
 
 import sys
@@ -7,38 +17,31 @@ import mujoco
 import numpy as np
 from PIL import Image, ImageDraw
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pupper_ik import (  # noqa: E402
+    HIP_OFFSETS,
+    LEG_ORDER,
+    WELD_RELPOSE_X,
+    PupperLegIK,
+    build_sim_model,
+)
 
-ROOT = Path(__file__).resolve().parents[5]
-EXERCISES_DIR = ROOT / "codes/practices/quadruped/cs123/exercises"
-if str(EXERCISES_DIR) not in sys.path:
-    sys.path.insert(0, str(EXERCISES_DIR))
 
-from shared.kinematics.leg_kinematics import HIP_OFFSETS, LEG_ORDER, ik_pupper_leg  # noqa: E402
+OUT_DIR = Path(__file__).with_name("outputs")
 
-
-FIG_DIR = ROOT / "docs/practices/quadruped/cs123/figs"
-FIG_DIR.mkdir(parents=True, exist_ok=True)
-
-MODEL_GAIT_DEMO = Path(__file__).with_name("pupper_gait_demo.xml")
-
-JOINT_SUFFIXES = ("HAA", "HFE", "KFE")
+# trot：对角腿同相，两组错半个周期（FL+RR / FR+RL）。
 PHASE_OFFSETS = {"FL": 0.0, "FR": 0.5, "RL": 0.5, "RR": 0.0}
-
-T_CYCLE = 0.4
 DUTY = 0.5
-STEP_HEIGHT = 0.04
-STAND_HEIGHT = 0.18
-MAX_TORQUE = 18.0
 
 WIDTH = 720
 HEIGHT = 540
 FPS = 24
 SETTLE_SECONDS = 0.35
-RENDER_SECONDS = 3.2
+RENDER_SECONDS = 3.0
+
 
 def leg_phase(t: float, leg: str, t_cycle: float, duty: float = DUTY) -> tuple[bool, float]:
-    t_global = (t / t_cycle) % 1.0
-    t_local = (t_global + PHASE_OFFSETS[leg]) % 1.0
+    t_local = ((t / t_cycle) % 1.0 + PHASE_OFFSETS[leg]) % 1.0
     if t_local < duty:
         return True, t_local / duty
     return False, (t_local - duty) / (1.0 - duty)
@@ -54,104 +57,30 @@ def foot_trajectory(s: float, in_stance: bool, step_length: float, step_height: 
     return np.array((x, 0.0, z), dtype=float)
 
 
-def make_q_seed() -> dict[str, np.ndarray]:
-    return {leg: np.array((0.0, 0.18, -0.36), dtype=float) for leg in LEG_ORDER}
-
-
 def gait_step(
+    kin: PupperLegIK,
     t: float,
     step_length: float,
-    q_seed: dict[str, np.ndarray],
+    seed: dict[str, np.ndarray],
     *,
     t_cycle: float,
     step_height: float,
     stand_height: float,
-) -> np.ndarray:
-    target_q = np.zeros(12, dtype=float)
-    for k, leg in enumerate(LEG_ORDER):
+) -> dict[str, np.ndarray]:
+    target = {}
+    for leg in LEG_ORDER:
         in_stance, s = leg_phase(t, leg, t_cycle)
-        hip_local = foot_trajectory(s, in_stance, step_length, step_height, stand_height)
-        foot_xyz = HIP_OFFSETS[leg] + hip_local
-        q_leg = ik_pupper_leg(foot_xyz, leg=leg, q_seed=q_seed[leg])
-        q_seed[leg] = q_leg
-        target_q[3 * k : 3 * k + 3] = q_leg
-    return target_q
-
-
-def joint_names() -> tuple[str, ...]:
-    return tuple(f"{leg}_{suffix}" for leg in LEG_ORDER for suffix in JOINT_SUFFIXES)
-
-
-def actuator_names() -> tuple[str, ...]:
-    return tuple(f"{leg}_{suffix}_motor" for leg in LEG_ORDER for suffix in JOINT_SUFFIXES)
-
-
-def joint_qpos_qvel_ids(model: mujoco.MjModel) -> tuple[np.ndarray, np.ndarray]:
-    qpos_ids: list[int] = []
-    qvel_ids: list[int] = []
-    for name in joint_names():
-        joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
-        if joint_id < 0:
-            raise ValueError(f"missing joint {name!r} in {model.names!r}")
-        qpos_ids.append(int(model.jnt_qposadr[joint_id]))
-        qvel_ids.append(int(model.jnt_dofadr[joint_id]))
-    return np.asarray(qpos_ids, dtype=int), np.asarray(qvel_ids, dtype=int)
-
-
-def actuator_ids(model: mujoco.MjModel) -> np.ndarray:
-    ids: list[int] = []
-    for name in actuator_names():
-        actuator_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR, name)
-        if actuator_id < 0:
-            raise ValueError(f"missing actuator {name!r} in {model.names!r}")
-        ids.append(int(actuator_id))
-    return np.asarray(ids, dtype=int)
-
-
-def body_id(model: mujoco.MjModel, name: str = "base") -> int:
-    body = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, name)
-    if body < 0:
-        raise ValueError(f"missing body {name!r}")
-    return int(body)
-
-
-def reset_pose(
-    model: mujoco.MjModel,
-    data: mujoco.MjData,
-    qpos_ids: np.ndarray,
-    q0: np.ndarray,
-    *,
-    stand_height: float,
-    weld_active: bool,
-) -> None:
-    mujoco.mj_resetData(model, data)
-    if model.neq:
-        data.eq_active[:] = 1 if weld_active else 0
-    data.qpos[:7] = (0.0, 0.0, stand_height, 1.0, 0.0, 0.0, 0.0)
-    data.qpos[qpos_ids] = q0
-    data.qvel[:] = 0.0
-    mujoco.mj_forward(model, data)
-
-
-def apply_pd(
-    data: mujoco.MjData,
-    qpos_ids: np.ndarray,
-    qvel_ids: np.ndarray,
-    ctrl_ids: np.ndarray,
-    target_q: np.ndarray,
-    kp: np.ndarray,
-    kd: np.ndarray,
-) -> None:
-    q = data.qpos[qpos_ids]
-    dq = data.qvel[qvel_ids]
-    tau = kp * (target_q - q) - kd * dq
-    data.ctrl[ctrl_ids] = np.clip(tau, -MAX_TORQUE, MAX_TORQUE)
+        foot_base = HIP_OFFSETS[leg] + foot_trajectory(s, in_stance, step_length, step_height, stand_height)
+        q = kin.ik(foot_base, leg=leg, q_seed=seed[leg])
+        seed[leg] = q
+        target[leg] = q
+    return target
 
 
 def add_label(frame: np.ndarray, text: str) -> Image.Image:
     image = Image.fromarray(frame).convert("RGB")
     draw = ImageDraw.Draw(image, "RGBA")
-    draw.rounded_rectangle((18, 18, 438, 68), radius=10, fill=(255, 255, 255, 218))
+    draw.rounded_rectangle((18, 18, 470, 68), radius=10, fill=(255, 255, 255, 218))
     draw.text((34, 34), text, fill=(20, 30, 40, 255))
     return image
 
@@ -159,7 +88,7 @@ def add_label(frame: np.ndarray, text: str) -> Image.Image:
 def make_camera() -> mujoco.MjvCamera:
     camera = mujoco.MjvCamera()
     camera.type = mujoco.mjtCamera.mjCAMERA_FREE
-    camera.distance = 0.82
+    camera.distance = 0.72
     camera.azimuth = 135.0
     camera.elevation = -18.0
     camera.lookat[:] = (0.0, 0.0, 0.10)
@@ -168,71 +97,59 @@ def make_camera() -> mujoco.MjvCamera:
 
 def render_experiment(
     name: str,
-    model_path: Path,
     output: Path,
     *,
     step_length: float,
     t_cycle: float,
     step_height: float,
     stand_height: float,
-    kp_value: float,
-    kd_value: float,
-    weld_active: bool,
     weld_speed: float = 0.0,
 ) -> None:
-    model = mujoco.MjModel.from_xml_path(str(model_path))
+    kin = PupperLegIK()
+    model = build_sim_model(stand_height=stand_height, weld=True)
     model.vis.global_.offwidth = max(model.vis.global_.offwidth, WIDTH)
     model.vis.global_.offheight = max(model.vis.global_.offheight, HEIGHT)
     data = mujoco.MjData(model)
-    qpos_ids, qvel_ids = joint_qpos_qvel_ids(model)
-    ctrl_ids = actuator_ids(model)
-    base_id = body_id(model)
-    kp = np.full(12, kp_value)
-    kd = np.full(12, kd_value)
+    base_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "base_link")
 
-    q_seed = make_q_seed()
-    q0 = gait_step(
-        0.0,
-        step_length,
-        q_seed,
-        t_cycle=t_cycle,
-        step_height=step_height,
-        stand_height=stand_height,
-    )
-    reset_pose(model, data, qpos_ids, q0, stand_height=stand_height, weld_active=weld_active)
+    seed = {leg: np.zeros(3) for leg in LEG_ORDER}
+    q0 = gait_step(kin, 0.0, step_length, seed, t_cycle=t_cycle, step_height=step_height, stand_height=stand_height)
+
+    # 初始摆到站姿：base 在 stand_height，12 个关节按 q0。
+    data.qpos[:] = 0.0
+    data.qpos[2] = stand_height
+    data.qpos[3] = 1.0
+    for leg in LEG_ORDER:
+        data.qpos[kin.qadr[leg]] = q0[leg]
+    mujoco.mj_forward(model, data)
 
     renderer = mujoco.Renderer(model, height=HEIGHT, width=WIDTH)
     camera = make_camera()
     frames: list[Image.Image] = []
     next_frame_time = 0.0
+    base_z: list[float] = []
 
     try:
         while data.time < SETTLE_SECONDS + RENDER_SECONDS:
             gait_t = max(0.0, data.time - SETTLE_SECONDS)
-            if weld_active and model.neq:
-                model.eq_data[0, 0] = weld_speed * gait_t
-            target_q = (
+            if weld_speed and model.neq:
+                model.eq_data[0, WELD_RELPOSE_X] = weld_speed * gait_t
+            target = (
                 q0
                 if data.time < SETTLE_SECONDS
-                else gait_step(
-                    gait_t,
-                    step_length,
-                    q_seed,
-                    t_cycle=t_cycle,
-                    step_height=step_height,
-                    stand_height=stand_height,
-                )
+                else gait_step(kin, gait_t, step_length, seed, t_cycle=t_cycle, step_height=step_height, stand_height=stand_height)
             )
-            apply_pd(data, qpos_ids, qvel_ids, ctrl_ids, target_q, kp, kd)
+            for leg in LEG_ORDER:
+                data.ctrl[kin.ctrl[leg]] = target[leg]
             mujoco.mj_step(model, data)
 
             if data.time < SETTLE_SECONDS:
                 continue
+            base_z.append(float(data.xpos[base_id][2]))
 
             render_t = data.time - SETTLE_SECONDS
             if render_t + 0.5 * model.opt.timestep < next_frame_time:
                 continue
-
             camera.lookat[:] = data.xpos[base_id]
             camera.lookat[2] = max(float(camera.lookat[2]), 0.09)
             renderer.update_scene(data, camera=camera)
@@ -241,42 +158,29 @@ def render_experiment(
     finally:
         renderer.close()
 
-    frames[0].save(
-        output,
-        save_all=True,
-        append_images=frames[1:],
-        duration=1000 // FPS,
-        loop=0,
-        optimize=True,
-    )
-    print(f"saved {output} ({len(frames)} frames, xml={model_path}, weld_active={weld_active})")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    frames[0].save(output, save_all=True, append_images=frames[1:], duration=1000 // FPS, loop=0, optimize=True)
+    std_mm = float(np.std(base_z[-int(round(1.0 / model.opt.timestep)):])) * 1000.0
+    print(f"saved {output} ({len(frames)} frames, base z std={std_mm:.2f} mm)")
 
 
 def main() -> None:
     render_experiment(
-        name="In-place trot · pupper_gait_demo.xml",
-        model_path=MODEL_GAIT_DEMO,
-        output=FIG_DIR / "lab5_inplace_trot.gif",
+        name="In-place trot · pupper_v3.xml",
+        output=OUT_DIR / "lab5_inplace_trot.gif",
         step_length=0.0,
-        t_cycle=T_CYCLE,
-        step_height=STEP_HEIGHT,
-        stand_height=STAND_HEIGHT,
-        kp_value=30.0,
-        kd_value=1.0,
-        weld_active=True,
+        t_cycle=0.4,
+        step_height=0.03,
+        stand_height=0.13,
     )
     render_experiment(
-        name="Forward trot · pupper_gait_demo.xml",
-        model_path=MODEL_GAIT_DEMO,
-        output=FIG_DIR / "lab5_forward_trot.gif",
-        step_length=0.07,
-        t_cycle=0.8,
-        step_height=0.05,
-        stand_height=0.16,
-        kp_value=24.0,
-        kd_value=0.8,
-        weld_active=True,
-        weld_speed=0.12,
+        name="Forward trot · pupper_v3.xml",
+        output=OUT_DIR / "lab5_forward_trot.gif",
+        step_length=0.05,
+        t_cycle=0.5,
+        step_height=0.035,
+        stand_height=0.13,
+        weld_speed=0.10,
     )
 
 
