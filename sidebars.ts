@@ -46,7 +46,8 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         { type: 'link', label: '视觉语言大模型(VLM)', href: '/docs/foundations/vlm/intro' },
-        { type: 'link', label: '定位与触觉感知', href: '/docs/foundations/perception/placeholder' },
+        { type: 'link', label: '定位、触觉与传感器标定', href: '/docs/foundations/perception/placeholder' },
+        { type: 'link', label: '传感器标定与 sim2real', href: '/docs/foundations/perception/sensor-calibration-sim2real' },
       ],
     },
     {

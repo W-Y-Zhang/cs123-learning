@@ -89,7 +89,8 @@
 | 章节 | 简介 | 状态 |
 | :--- | :--- | :--- |
 | [视觉感知与 VLM](docs/foundations/vlm/0.intro.md) | Transformer、ViT、视觉编码器与多模态融合 | ✅ 可用 |
-| [定位与触觉感知](docs/foundations/perception/placeholder.md) | SLAM、足端接触、触觉传感和多传感器融合 | 🚧 占位中 |
+| [定位、触觉与传感器标定](docs/foundations/perception/placeholder.md) | SLAM、足端接触、触觉传感、多传感器融合和 sim2real 标定 | 🚧 部分可用 |
+| [传感器标定与 sim2real](docs/foundations/perception/1.sensor-calibration-sim2real.md) | 坐标系、时间同步、外参误差放大和在线标定监控 | ✅ 可用 |
 
 #### 工程底座
 
