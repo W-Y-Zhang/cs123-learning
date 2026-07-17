@@ -20,7 +20,8 @@ displayed_sidebar: foundationsOverviewSidebar
 | 小脑：运动控制 | [控制器](./controllers/intro) | 如何从 PID、LQR 学到 MPC、阻抗控制和 ROS2 / 仿真集成? | 关节控制、轨迹跟踪、移动机器人项目 |
 | 小脑：运动控制 | [运动规划](./robotics-and-ros2/moveit2_basics) | 如何从模型、坐标树进入 MoveIt 2 规划闭环? | 机械臂、移动操作项目 |
 | 感官：感知系统 | [视觉语言大模型(VLM)](./vlm/intro) | 多模态模型如何理解图像与语言? | VLA 相关项目 |
-| 感官：感知系统 | [定位与触觉感知](./perception/placeholder) | 机器人如何理解外部环境和自身接触状态? | 移动操作、四足、人形项目 |
+| 感官：感知系统 | [定位、触觉与传感器标定](./perception/placeholder) | 机器人如何理解外部环境、自身接触状态和传感器可信度? | 移动操作、四足、人形项目 |
+| 感官 / 工程底座 | [传感器标定与 sim2real](./perception/sensor-calibration-sim2real) | 坐标系、时间戳和外参误差如何影响真机闭环? | 真机部署、sim2real、数据回放 |
 | 工程底座 | [仿真工具](./simulation/intro) | 怎么在仿真中跑机器人？ | 所有实践项目 |
 | 工程底座 | [ROS2](./robotics-and-ros2/intro) | 坐标变换、FK/IK、tf2、URDF 与 MoveIt 2 如何串成系统? | 机械臂、四足、所有实践项目 |
 | 工程底座 | [CAN 与 MCU 通信](./communication/can-mcu) | 上位机、下位机和执行器如何稳定通信? | 真机部署、硬件适配 |
