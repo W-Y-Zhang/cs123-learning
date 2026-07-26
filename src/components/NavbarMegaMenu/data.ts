@@ -71,7 +71,7 @@ export const megaMenus: MegaMenuConfig[] = [
   },
   {
     id: 'foundations',
-    label: '理论技能树',
+    label: '理论基础',
     activeBasePaths: ['/docs/foundations'],
     panelWidth: 1120,
     columns: [
