@@ -8,23 +8,41 @@
 # 支持到 CUDA 12 的驱动上，cuDNN 会初始化失败或 jax 静默回退到 CPU。隔离 venv
 # 里只留一套 CUDA 库，问题消失。
 #
-# 安装（在 exercises/ 下，固定用 Python 3.12——brax 要求 >=3.11）：
+# 安装：推荐直接用一键脚本，它会自动识别加速后端并挑对下面的插件组合：
+#
+#   bash lab_6_rl_pupper/setup_mjx_env.sh                 # 自动识别
+#   bash lab_6_rl_pupper/setup_mjx_env.sh --backend cpu   # 强制指定
+#
+# 想手动装的话（在 exercises/ 下，固定用 Python 3.12——brax 要求 >=3.11）：
 #
 #   uv venv .venv-mjx --python 3.12
 #
-#   # A. GPU，驱动支持 CUDA 12（用 nvidia-smi 右上角的 "CUDA Version" 判断）：
+#   # A. NVIDIA GPU，驱动支持 CUDA 12（用 nvidia-smi 右上角的 "CUDA Version" 判断）：
 #   uv pip install --python .venv-mjx/bin/python -r lab_6_rl_pupper/requirements-mjx.txt \
 #     "jax[cuda12]==0.10.1" "jax-cuda12-pjrt==0.10.1" "jax-cuda12-plugin==0.10.1"
 #
-#   # B. GPU，驱动支持 CUDA 13（需要驱动 >=580）：把 A 的三个包换成 cuda13 同版本号：
+#   # B. NVIDIA GPU，驱动支持 CUDA 13（需要驱动 >=580）：把 A 的三个包换成 cuda13 同版本号：
 #   uv pip install --python .venv-mjx/bin/python -r lab_6_rl_pupper/requirements-mjx.txt \
 #     "jax[cuda13]==0.10.1" "jax-cuda13-pjrt==0.10.1" "jax-cuda13-plugin==0.10.1"
 #
-#   # C. 纯 CPU / macOS：只装本文件，不加任何 cuda 插件：
+#   # C. AMD GPU（ROCm 7.x）：
+#   uv pip install --python .venv-mjx/bin/python -r lab_6_rl_pupper/requirements-mjx.txt \
+#     "jax-rocm7-pjrt==0.10.1" "jax-rocm7-plugin==0.10.1"
+#   # 注意两点与 CUDA 不同：
+#   #  1) jax 没有 `rocm` extra——写 jax[rocm] 会被静默忽略，只能显式装上面两个包；
+#   #  2) ROCm 插件只有 ~24 MB，**不自带运行库**，依赖系统已装好的 ROCm 7.x
+#   #     (/opt/rocm)；CUDA 那边则是 pip 把整套 nvidia-* 运行库拉进来。
+#   #     系统 ROCm 缺失或大版本不符时，jax 会静默回退到 CPU。
+#
+#   # D. 纯 CPU / macOS：只装本文件，不加任何加速器插件：
 #   uv pip install --python .venv-mjx/bin/python -r lab_6_rl_pupper/requirements-mjx.txt
 #
 # 自检：.venv-mjx/bin/python -c "import jax; print(jax.default_backend())"
-#   GPU 应打印 gpu；打印 cpu 说明驱动/插件 CUDA 大版本不匹配，回退了。
+#   GPU 应打印 gpu；打印 cpu 说明驱动/插件的加速器大版本不匹配（CUDA 或 ROCm），回退了。
+#   setup_mjx_env.sh 装完会自动跑这一步并在回退时报错。
+# ROCm 上启动时的 "rsmi_dev_gpu_metrics_info_get failed / Could not determine PCIe
+# bandwidth" 是无害告警：核显没有独立 PCIe 链路，XLA 取不到带宽就按 Gen4 x16 估，
+# 不影响训练。
 # 启动时 "Failed to import warp" 是无害告警：mujoco-mjx 探测可选的 warp 后端，
 # 找不到就退回 JAX 后端，不影响训练，不用装 warp。
 
