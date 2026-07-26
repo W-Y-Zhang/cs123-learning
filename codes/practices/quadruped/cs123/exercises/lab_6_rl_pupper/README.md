@@ -106,22 +106,49 @@ jax / brax / mujoco-mjx 的版本互相牵制，曾经很难凑齐（jax 0.10 �
 运行库在只支持 CUDA 12 的驱动上让 jax 回退 CPU）。一组锁好版本、在三类机器上验过
 的依赖固化在 [`requirements-mjx.txt`](requirements-mjx.txt)，照它走即可，**装在独立
 venv，不和主线 `.venv` 混淆**。下面所有命令和主线一样**在 `exercises/` 下执行**
-（`.venv-mjx` 会落在 `exercises/.venv-mjx`）：
+（`.venv-mjx` 会落在 `exercises/.venv-mjx`）。
+
+**NVIDIA 和 AMD 都支持**，用一键脚本自动识别，不用自己记该装哪套插件：
 
 ```bash
-uv venv .venv-mjx --python 3.12                     # brax 要 Python >=3.11
-
-# GPU（驱动支持 CUDA 12）：
-uv pip install --python .venv-mjx/bin/python -r lab_6_rl_pupper/requirements-mjx.txt \
-  "jax[cuda12]==0.10.1" "jax-cuda12-pjrt==0.10.1" "jax-cuda12-plugin==0.10.1"
-# GPU（驱动支持 CUDA 13，需驱动 >=580）：把上面三个包换成 cuda13 同版本号
-# 纯 CPU / macOS：只跑 -r 那一段，不加任何 cuda 插件
-
-.venv-mjx/bin/python -c "import jax; print(jax.default_backend())"   # GPU 应打印 gpu
+bash lab_6_rl_pupper/setup_mjx_env.sh               # 自动识别后端并建 .venv-mjx
 .venv-mjx/bin/python lab_6_rl_pupper/train_brax_ppo.py --output portfolio/pupper_mjx
 ```
 
+脚本会打印识别结果，并在装完自检 `jax.default_backend()`——回退到 CPU 时直接报错，
+而不是让你训到一半才发现慢得离谱：
+
+```
+  detected: ROCm / gfx1151  -> rocm
+  creating exercises/.venv-mjx (py3.12)
+  self-check:
+    jax.default_backend() = gpu  [rocm:0]
+```
+
+识别不准或想强制某条路时用 `--backend`：
+
+| `--backend` | 适用 | 装的插件 |
+| --- | --- | --- |
+| `auto`（默认） | 按 `/dev/kfd`、`nvidia-smi` 探测 | 见下 |
+| `rocm` | AMD GPU + 系统 ROCm 7.x | `jax-rocm7-pjrt` + `jax-rocm7-plugin` |
+| `cuda12` | NVIDIA，驱动支持 CUDA 12 | `jax[cuda12]` + pjrt + plugin |
+| `cuda13` | NVIDIA，驱动支持 CUDA 13（驱动 >=580） | `jax[cuda13]` + pjrt + plugin |
+| `cpu` | 纯 CPU / macOS | 不装加速器插件 |
+
+插件版本一律从 `requirements-mjx.txt` 里的 `jax==` 读出来，四个组件版本永远一致。
+手动装法仍完整保留在 [`requirements-mjx.txt`](requirements-mjx.txt) 头部注释里。
+
+**AMD/ROCm 两个和 CUDA 不对称的坑**：jax **没有** `rocm` extra（写 `jax[rocm]` 会被
+静默忽略并告警，只能显式装 pjrt + plugin 两个包）；ROCm 插件只有 ~24 MB、**不自带
+运行库**，依赖系统已装好的 ROCm 7.x（`/opt/rocm`），而 CUDA 那边是 pip 把整套
+`nvidia-*` 运行库拉进来。系统 ROCm 缺失或大版本不符时 jax 会静默回退 CPU——这正是
+脚本自检要拦的情况。
+
 启动时的 `Failed to import warp` 是无害告警（mjx 探测可选 warp 后端、退回 JAX 后端），
-不用理会。验证覆盖：**Ubuntu** 上跑通了 GPU（CUDA 12）与纯 CPU 两条路，**macOS**
-上跑通了纯 CPU 路（`reset`/`step` 均正常）；CUDA 13 路依赖可正常解析，但需驱动
->=580 的机器实跑确认。
+不用理会；ROCm 上另有 `Could not determine PCIe bandwidth` 告警，核显没有独立 PCIe
+链路，同样无害。
+
+验证覆盖：**Ubuntu** 上跑通了 NVIDIA GPU（CUDA 12）与纯 CPU 两条路，**macOS** 上跑通了
+纯 CPU 路（`reset`/`step` 均正常）；**AMD Ryzen AI MAX+ 395 / Radeon 8060S（gfx1151,
+ROCm 7.13）** 上跑通了 ROCm 路——`train_brax_ppo.py` 无需任何改动即可在 GPU 上训练。
+CUDA 13 路依赖可正常解析，但需驱动 >=580 的机器实跑确认。
