@@ -11,9 +11,25 @@ MuJoCo 物理仿真主要使用 CPU；有桌面图形会话时，交互 viewer �
 Linux 图形栈使用 Radeon。强化学习依赖固定为官方 CPU 版 PyTorch，避免原锁
 文件在 Linux 上安装 CUDA 13 和 `nvidia-*` 运行库。
 
-当前系统的 ROCm 设备节点 `/dev/kfd` 不可用，因此本版本优先保证 CPU 路径
-稳定可复现，不启用 PyTorch ROCm。以后修复系统 ROCm 环境时，可另建专用虚拟
-环境尝试 GPU 训练，无需改动 MuJoCo 控制代码。
+主线（本目录 `.venv`）**不启用 GPU**：`pyproject.toml` 把 PyTorch 固定到官方 CPU
+版，保证在没有 ROCm 的机器上也能稳定复现。这一点不因机器而变。
+
+**但 GPU 训练是可用的**，只是走另一条路：`exercises/lab_6_rl_pupper` 的 MJX/brax
+管线基于 JAX 而非 PyTorch，装在自己的 `.venv-mjx` 里，和主线 `.venv` 完全隔离。
+只要机器有 ROCm 设备节点 `/dev/kfd` 和系统 ROCm 7.x，就能直接在 AMD GPU 上训练，
+**MuJoCo 控制代码和训练脚本都不用改**：
+
+```bash
+cd exercises
+bash lab_6_rl_pupper/setup_mjx_env.sh          # 自动识别 ROCm / CUDA / CPU
+.venv-mjx/bin/python lab_6_rl_pupper/train_brax_ppo.py --output portfolio/pupper_mjx
+```
+
+已在 **AMD Ryzen AI MAX+ PRO 395 / Radeon 8060S（gfx1151、ROCm 7.13）** 上实测跑通。
+若机器确实没有 `/dev/kfd`（部分早期 Radeon 890M 环境如此），脚本会识别为 `cpu` 并
+照常装好纯 CPU 的 MJX 环境，流程不变、只是慢。细节见
+[`exercises/lab_6_rl_pupper/README.md`](exercises/lab_6_rl_pupper/README.md) 的
+「可选进阶：MJX/brax GPU 训练」。
 
 ## 环境准备
 
