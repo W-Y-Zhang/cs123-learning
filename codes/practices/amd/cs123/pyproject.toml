@@ -1,0 +1,27 @@
+[project]
+name = "cs123-quadruped-amd"
+version = "0.1.0"
+description = "Datawhale 具身智能教程 CS123 四足机器人课程 AMD Linux 依赖"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "gymnasium==1.2.2",
+    "mujoco==3.7.0",
+    "stable-baselines3>=2.7.1",
+    "torch>=2.3.0",
+    "imageio>=2.37.0",
+    "matplotlib>=3.10.8",
+    "pillow>=12.0.0",
+    "pytest>=8.0.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

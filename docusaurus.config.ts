@@ -103,12 +103,12 @@ const config: Config = {
         },
         {
           type: 'custom-navbarMegaMenu',
-          menuId: 'practices',
+          menuId: 'foundations',
           position: 'left',
         },
         {
           type: 'custom-navbarMegaMenu',
-          menuId: 'foundations',
+          menuId: 'practices',
           position: 'left',
         },
         {
