@@ -14,7 +14,11 @@
 <p align="center">
   <sub>合作支持</sub><br />
   <a href="docs/practices/amd/intro.md">
-    <img src="assets/logo/logo_amd.svg" width="220" alt="AMD University Program" />
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="assets/logo/logo_amd_wht.svg" />
+      <source media="(prefers-color-scheme: light)" srcset="assets/logo/logo_amd.svg" />
+      <img src="assets/logo/logo_amd.svg" width="220" alt="AMD University Program" />
+    </picture>
   </a>
 </p>
 
