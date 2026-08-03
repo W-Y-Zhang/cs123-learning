@@ -11,6 +11,13 @@
   <img alt="状态" src="https://img.shields.io/badge/status-Alpha-orange" />
 </p>
 
+<p align="center">
+  <sub>合作支持</sub><br />
+  <a href="docs/practices/amd/intro.md">
+    <img src="assets/logo/logo_amd.svg" width="220" alt="AMD University Program" />
+  </a>
+</p>
+
 > [!CAUTION]
 > **Alpha 内测版本**:仍在迁移和重构中,部分章节是占位页,欢迎提 Issue 反馈问题或建议。
 
