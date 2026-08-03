@@ -139,6 +139,14 @@ npm install
 npm run dev
 ```
 
+## Star History
+
+<p align="center">
+  <a href="https://star-history.com/#datawhalechina/dive-into-embodied-ai&Date">
+    <img src="https://api.star-history.com/svg?repos=datawhalechina/dive-into-embodied-ai&type=Date" alt="Dive into Embodied AI Star History Chart" />
+  </a>
+</p>
+
 ## 贡献者名单
 
 | 姓名 | 职责 | 简介 |
