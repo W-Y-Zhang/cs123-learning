@@ -142,9 +142,11 @@ npm run dev
 ## Star History
 
 <p align="center">
-  <a href="https://star-history.com/#datawhalechina/dive-into-embodied-ai&Date">
-    <img src="https://api.star-history.com/svg?repos=datawhalechina/dive-into-embodied-ai&type=Date" alt="Dive into Embodied AI Star History Chart" />
+  <a href="assets/star-history.svg">
+    <img src="assets/star-history.svg" width="900" alt="Dive into Embodied AI Star History Chart" />
   </a>
+  <br />
+  <sub>由 GitHub Actions 自动更新</sub>
 </p>
 
 ## 贡献者名单
