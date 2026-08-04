@@ -103,6 +103,13 @@ PD 调参对比扫描，出 CSV / 图 / GIF（无窗口）：
 uv run python 4.quadruped-mjcf/run_gain_sweep.py
 ```
 
+生成 `original`、`long-leg` 和 `heavy` 三种形态，搜索对应站姿并验证稳定性：
+
+```bash
+uv run python 4.quadruped-mjcf/pupper_variants/run_pupper_variants.py
+uv run python 4.quadruped-mjcf/pupper_variants/test_pupper_variants.py
+```
+
 ### 5.gait-control
 
 渲染原地 / 前进步态 GIF（默认 trot，可选 walk / pace / bound / gallop）：

@@ -9,7 +9,8 @@
 ├── run_view_pupper_fixed.py    # §4.4 看固定基座（mj_forward 静态）
 ├── run_view_pupper.py          # §4.5 看浮动基座（mj_step 落地 + 伺服拉回）
 ├── run_stand_pupper.py         # §4.6 让浮动基座站住并判稳
-└── run_gain_sweep.py           # 可选扩展：扫描 gainprm / biasprm
+├── run_gain_sweep.py           # 可选扩展：扫描 gainprm / biasprm
+└── pupper_variants/            # Pupper 形态与站姿探索
 ```
 
 模型和 STL 网格统一存放在 `../assets/mjcfs/`，供第 4、5、6 章共用。
@@ -74,5 +75,16 @@ macOS 上想开窗口单独看某一组参数：
 ```bash
 uv run mjpython 4.quadruped-mjcf/run_gain_sweep.py --viewer default
 ```
+
+### 探索形态与站姿
+
+从同一份骨架派生 `original`、`long-leg` 和 `heavy` 三种模型，分别搜索站姿并验证稳定性：
+
+```bash
+uv run python 4.quadruped-mjcf/pupper_variants/run_pupper_variants.py
+uv run python 4.quadruped-mjcf/pupper_variants/test_pupper_variants.py
+```
+
+生成结果写入 `4.quadruped-mjcf/outputs/pupper_variants/`。详细说明见 [`pupper_variants/README.md`](pupper_variants/README.md)。
 
 > macOS 上不要走 `mjpython -m mujoco.viewer --mjcf=...`：mjpython 启动时已经 import 过一次 `mujoco.viewer` 来占用 GUI 主线程，再用 `-m` 经 runpy 跑第二次会撞出 `RuntimeError: Caught an unknown exception!`。用脚本入口 `mjpython <script>.py` 绕开它。
