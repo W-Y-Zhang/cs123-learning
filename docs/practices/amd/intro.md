@@ -8,6 +8,14 @@ displayed_sidebar: practicesAmdSidebar
 
 探索具身智能算法在 AMD 平台上的训练、推理与机器人应用。专区围绕可复现的完整项目组织内容，覆盖环境配置、算法实验、结果验证与部署流程。
 
+## 云端算力
+
+### ☁️ [AUP Learning Cloud 云算力](./aup-learning-cloud)
+
+通过浏览器使用基于 **AMD Ryzen AI APU** 的 JupyterHub、Code Server 与 ROCm 开发环境，无需在本地配置 AMD 硬件即可完成课程练习、环境验证和小规模具身智能实验。
+
+`AMD`　`Ryzen AI`　`ROCm`　`JupyterHub`　`Code Server`
+
 ## 旗舰项目
 
 ### 🐕 [玩转 Pupper 四足机器人](./pupper-control/intro)

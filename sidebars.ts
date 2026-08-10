@@ -183,6 +183,7 @@ const sidebars: SidebarsConfig = {
       label: 'AMD 专区',
       collapsed: false,
       items: [
+        { type: 'link', label: 'AUP Learning Cloud 云算力', href: '/docs/practices/amd/aup-learning-cloud' },
         { type: 'link', label: '玩转 Pupper 四足机器人', href: '/docs/practices/amd/pupper-control/intro' },
       ],
     },
@@ -195,6 +196,11 @@ const sidebars: SidebarsConfig = {
       link: { type: 'doc', id: 'practices/amd/intro' },
       collapsible: false,
       items: [
+        {
+          type: 'doc',
+          id: 'practices/amd/aup-learning-cloud',
+          label: 'AUP Learning Cloud 云算力',
+        },
         {
           type: 'category',
           label: '玩转 Pupper 四足机器人',

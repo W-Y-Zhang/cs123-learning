@@ -308,6 +308,14 @@ export const megaMenus: MegaMenuConfig[] = [
         title: 'AMD 专区',
         items: [
           {
+            icon: '☁️',
+            title: 'AUP Learning Cloud 云算力',
+            description: '浏览器直连 Ryzen AI APU，体验 ROCm、JupyterHub 与 Code Server。',
+            to: '/docs/practices/amd/aup-learning-cloud',
+            activeBasePath: '/docs/practices/amd/aup-learning-cloud',
+            keywords: ['AMD', 'AUP', 'Ryzen AI', 'ROCm', '云算力'],
+          },
+          {
             icon: '🐕',
             title: '玩转 Pupper 四足机器人',
             description: 'AMD 旗舰项目：强化学习运动策略与 VLA 具身智能。',
