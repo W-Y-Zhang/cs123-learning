@@ -56,17 +56,21 @@
 
 <table align="center">
   <tr>
-    <td align="center" width="50%">
+    <td align="center" width="33%">
       <a href="https://datawhalechina.github.io/dive-into-embodied-ai/docs/practices/quadruped/cs123/intro">
-        <img src="docs/practices/quadruped/cs123/figs/lab5_forward_gait_comparison.gif" height="220" alt="CS123 四足步态对比" />
+        <img src="assets/lab5_forward_gait_comparison.gif" height="220" alt="CS123 四足步态对比" />
       </a>
       <br/><sub>✅ <b><a href="https://datawhalechina.github.io/dive-into-embodied-ai/docs/practices/quadruped/cs123/intro">从 0 到 1 搭建四足机器人</a></b><br/>CS123 仿真版 · MuJoCo + PPO + LLM 控制</sub>
     </td>
-    <td align="center" width="50%">
+    <td align="center" width="33%">
       <a href="docs/practices/wheel-legged/flamingo-isaaclab/preview.md">
-        <img src="docs/practices/wheel-legged/flamingo-isaaclab/figs/hero_swarm.gif" height="220" alt="Flamingo 两轮足在 Isaac Lab 中训练" />
+        <img src="assets/hero_swarm.gif" height="220" alt="Flamingo 两轮足在 Isaac Lab 中训练" />
       </a>
       <br/><sub>🔜 <b><a href="docs/practices/wheel-legged/flamingo-isaaclab/preview.md">两轮足 Flamingo · Isaac Lab</a></b><br/>新章预告 · Isaac Lab + PPO / CaT 训练</sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="assets/rebot_act_training.gif" height="220" alt="ReBot-Act 机械臂 ACT 策略训练效果" />
+      <br/><sub>✅ <b>ReBot-Act · ACT 训练效果</b><br/>真机视觉模仿学习 · 方块抓取与放置</sub>
     </td>
   </tr>
 </table>
