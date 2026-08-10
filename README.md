@@ -57,10 +57,10 @@
 <table align="center">
   <tr>
     <td align="center" width="50%">
-      <a href="docs/practices/quadruped/cs123/0.intro.md">
-        <img src="docs/practices/quadruped/cs123/figs/lab8_ball_chase.gif" height="220" alt="CS123 四足追球" />
+      <a href="https://datawhalechina.github.io/dive-into-embodied-ai/docs/practices/quadruped/cs123/intro">
+        <img src="docs/practices/quadruped/cs123/figs/lab5_forward_gait_comparison.gif" height="220" alt="CS123 四足步态对比" />
       </a>
-      <br/><sub>✅ <b><a href="docs/practices/quadruped/cs123/0.intro.md">从 0 到 1 搭建四足机器人</a></b><br/>CS123 仿真版 · MuJoCo + PPO + LLM 控制</sub>
+      <br/><sub>✅ <b><a href="https://datawhalechina.github.io/dive-into-embodied-ai/docs/practices/quadruped/cs123/intro">从 0 到 1 搭建四足机器人</a></b><br/>CS123 仿真版 · MuJoCo + PPO + LLM 控制</sub>
     </td>
     <td align="center" width="50%">
       <a href="docs/practices/wheel-legged/flamingo-isaaclab/preview.md">
