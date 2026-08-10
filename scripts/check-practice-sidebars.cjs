@@ -112,8 +112,13 @@ assert.deepEqual(
 const amdRefs = collectSidebarRefs(sidebars.practicesAmdSidebar);
 assert.deepEqual(
   amdRefs,
-  ['practices/amd/intro', 'practices/amd/cs123/intro'],
-  'AMD sidebar should only include its section overview and CS123 project',
+  [
+    'practices/amd/intro',
+    'practices/amd/pupper-control/intro',
+    'practices/amd/pupper-control/locomotion',
+    'practices/amd/pupper-control/vla',
+  ],
+  'AMD sidebar should only include its section overview and Pupper project',
 );
 
 for (const docPath of listDocs(path.join(rootDir, 'docs/practices/quadruped/cs123'))) {

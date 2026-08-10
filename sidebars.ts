@@ -183,7 +183,7 @@ const sidebars: SidebarsConfig = {
       label: 'AMD 专区',
       collapsed: false,
       items: [
-        { type: 'link', label: '玩转CS123机器人控制', href: '/docs/practices/amd/cs123/intro' },
+        { type: 'link', label: '玩转 Pupper 四足机器人', href: '/docs/practices/amd/pupper-control/intro' },
       ],
     },
   ],
@@ -195,7 +195,24 @@ const sidebars: SidebarsConfig = {
       link: { type: 'doc', id: 'practices/amd/intro' },
       collapsible: false,
       items: [
-        { type: 'doc', id: 'practices/amd/cs123/intro', label: '玩转CS123机器人控制' },
+        {
+          type: 'category',
+          label: '玩转 Pupper 四足机器人',
+          link: { type: 'doc', id: 'practices/amd/pupper-control/intro' },
+          collapsed: false,
+          items: [
+            {
+              type: 'doc',
+              id: 'practices/amd/pupper-control/locomotion',
+              label: 'Pupper Locomotion｜强化学习运动策略',
+            },
+            {
+              type: 'doc',
+              id: 'practices/amd/pupper-control/vla',
+              label: 'Pupper VLA｜视觉-语言-动作智能',
+            },
+          ],
+        },
       ],
     },
   ],

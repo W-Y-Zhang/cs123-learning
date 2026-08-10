@@ -26,4 +26,4 @@ sidebar_position: 1
 
 ## AMD 专区
 
-- [玩转CS123机器人控制](./amd/cs123/intro)：面向 AMD 平台的 CS123 机器人控制项目入口。
+- [玩转 Pupper 四足机器人](./amd/pupper-control/intro)：AMD 专区旗舰项目，包含 **Pupper Locomotion｜强化学习运动策略**与 **Pupper VLA｜视觉-语言-动作智能**两个方向。标签：`AMD`、`Pupper`、`RL Locomotion`、`VLA`。

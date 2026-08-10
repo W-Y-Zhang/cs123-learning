@@ -309,11 +309,11 @@ export const megaMenus: MegaMenuConfig[] = [
         items: [
           {
             icon: '🐕',
-            title: '玩转CS123机器人控制',
-            description: '面向 AMD 平台的 CS123 机器人控制项目入口。',
-            to: '/docs/practices/amd/cs123/intro',
-            activeBasePath: '/docs/practices/amd/cs123',
-            keywords: ['AMD', 'CS123', '机器人控制'],
+            title: '玩转 Pupper 四足机器人',
+            description: 'AMD 旗舰项目：强化学习运动策略与 VLA 具身智能。',
+            to: '/docs/practices/amd/pupper-control/intro',
+            activeBasePath: '/docs/practices/amd/pupper-control',
+            keywords: ['AMD', 'Pupper', 'RL Locomotion', 'VLA'],
             featured: true,
           },
         ],
