@@ -8,14 +8,11 @@
 - AMD Radeon 890M
 
 MuJoCo 物理仿真主要使用 CPU；有桌面图形会话时，交互 viewer 和离屏渲染由
-Linux 图形栈使用 Radeon。强化学习依赖固定为官方 CPU 版 PyTorch，避免原锁
-文件在 Linux 上安装 CUDA 13 和 `nvidia-*` 运行库。
+Linux 图形栈使用 Radeon。强化学习依赖固定为官方 ROCm 7.0 版 PyTorch，不安装
+CUDA 或 `nvidia-*` 运行库。PPO 训练强制使用 AMD GPU，不允许回退到 CPU。
 
-主线（本目录 `.venv`）**不启用 GPU**：`pyproject.toml` 把 PyTorch 固定到官方 CPU
-版，保证在没有 ROCm 的机器上也能稳定复现。这一点不因机器而变。
-
-**但 GPU 训练是可用的**，只是走另一条路：`exercises/lab_6_rl_pupper` 的 MJX/brax
-管线基于 JAX 而非 PyTorch，装在自己的 `.venv-mjx` 里，和主线 `.venv` 完全隔离。
+另有一条 GPU 训练路线：`exercises/lab_6_rl_pupper` 的 MJX/brax 管线基于 JAX
+而非 PyTorch，装在自己的 `.venv-mjx` 里，和主线 `.venv` 完全隔离。
 只要机器有 ROCm 设备节点 `/dev/kfd` 和系统 ROCm 7.x，就能直接在 AMD GPU 上训练，
 **MuJoCo 控制代码和训练脚本都不用改**：
 
@@ -40,7 +37,7 @@ uv sync --frozen
 ```
 
 `uv sync --frozen` 会按 `.python-version` 使用 Python 3.12，创建 `.venv` 并安装
-`pyproject.toml` 里锁定的依赖（MuJoCo、Gymnasium、CPU PyTorch、
+`pyproject.toml` 里锁定的依赖（MuJoCo、Gymnasium、ROCm PyTorch、
 Matplotlib、Pillow）。
 
 之后用 `uv run` 执行脚本，无需手动激活环境：
@@ -55,13 +52,13 @@ AMD Linux 上的交互式 viewer 直接使用 `python`：
 uv run python xxx.py
 ```
 
-安装后可确认没有启用 CUDA/NVIDIA 后端：
+安装后可确认 PyTorch 已启用 ROCm/HIP：
 
 ```bash
-uv run python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
+uv run python -c "import torch; print(torch.__version__, torch.version.hip, torch.cuda.is_available(), torch.cuda.get_device_name(0))"
 ```
 
-当前锁定环境应输出 `2.13.0+cpu False`。还可以确认两个锁文件没有
+当前锁定环境应输出 `2.10.0+rocm7.0`、HIP 版本、`True` 和 AMD GPU 名称。还可以确认两个锁文件没有
 NVIDIA/CUDA 包：
 
 ```bash

@@ -16,6 +16,7 @@ import numpy as np  # noqa: E402
 from stable_baselines3 import PPO  # noqa: E402
 
 from pupper_env import PupperEnv  # noqa: E402
+from train import require_rocm_device  # noqa: E402
 
 
 LAB_DIR = Path(__file__).resolve().parent
@@ -145,7 +146,11 @@ def main() -> None:
     output_dir = Path(args.out)
     output_dir.mkdir(parents=True, exist_ok=True)
     env = PupperEnv()
-    model = PPO.load(args.checkpoint, env=env)
+    model = PPO.load(
+        args.checkpoint,
+        env=env,
+        device=require_rocm_device(),
+    )
     render_demo(model, env, output_dir / "demo.gif")
     render_velocity(model, env, output_dir / "velocity_tracking.png")
     print(

@@ -6,14 +6,14 @@ from pupper_env import PupperEnv, REWARD_WEIGHTS
 
 def test_spaces():
     env = PupperEnv()
-    assert env.observation_space.shape == (45,)
+    assert env.observation_space.shape == (48,)
     assert env.action_space.shape == (12,)
 
 
 def test_reset_obs():
     env = PupperEnv()
     obs, info = env.reset(seed=0)
-    assert obs.shape == (45,)
+    assert obs.shape == (48,)
     assert obs.dtype == np.float32
     assert np.all(np.isfinite(obs))
     assert isinstance(info, dict)
@@ -25,7 +25,7 @@ def test_step_contract():
     obs, reward, terminated, truncated, info = env.step(
         np.zeros(12, np.float32),
     )
-    assert obs.shape == (45,)
+    assert obs.shape == (48,)
     assert np.isfinite(reward)
     assert reward >= 0.0
     assert isinstance(terminated, bool)

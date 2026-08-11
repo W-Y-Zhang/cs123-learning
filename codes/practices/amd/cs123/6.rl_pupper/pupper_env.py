@@ -1,6 +1,6 @@
 """精简版 Pupper RL 环境。
 
-- 观测：45 维，包含角速度、重力方向、命令、关节状态和上一步动作。
+- 观测：48 维，包含机身线/角速度、重力方向、命令、关节状态和上一步动作。
 - 动作：12 维关节位置残差，由 PD 位置伺服器执行。
 - 奖励：速度跟踪、姿态、能耗、平滑性、足端腾空时间和终止惩罚。
 - 物理频率 250 Hz，控制频率 50 Hz。
@@ -56,18 +56,24 @@ FOOT_RADIUS = 0.02
 CMD_VX_RANGE = (-0.75, 0.75)
 CMD_VY_RANGE = (-0.5, 0.5)
 CMD_WZ_RANGE = (-2.0, 2.0)
-ZERO_CMD_PROB = 0.01
+ZERO_CMD_PROB = 0.10
 
-TRACKING_SIGMA = 0.25
+TRACKING_LIN_SIGMA = 0.10
+TRACKING_ANG_SIGMA = 0.25
 AIR_TIME_TARGET = 0.1
 CMD_DEAD_ZONE = 0.05
 REWARD_WEIGHTS = {
-    "tracking_lin_vel": 1.5,
+    "tracking_lin_vel": 2.5,
     "tracking_ang_vel": 0.8,
+    "lin_vel_error": -0.5,
+    "lin_vel_z": -2.0,
+    "ang_vel_xy": -0.05,
     "orientation": -5.0,
     "torques": -2e-4,
     "action_rate": -0.01,
     "feet_air_time": 0.2,
+    "stand_still": -0.5,
+    "stand_still_joint_velocity": -0.05,
     "termination": -100.0,
 }
 
@@ -94,7 +100,7 @@ class PupperEnv(gym.Env):
         self.max_steps = max_steps
 
         self.action_space = spaces.Box(-1.0, 1.0, (12,), np.float32)
-        self.observation_space = spaces.Box(-100.0, 100.0, (45,), np.float32)
+        self.observation_space = spaces.Box(-100.0, 100.0, (48,), np.float32)
 
         self._base_id = mujoco.mj_name2id(
             self.model, mujoco.mjtObj.mjOBJ_BODY, "base_link",
@@ -206,14 +212,31 @@ class PupperEnv(gym.Env):
             feet_air_time = 0.0
 
         terms = {
-            "tracking_lin_vel": float(np.exp(-lin_error / TRACKING_SIGMA)),
-            "tracking_ang_vel": float(np.exp(-ang_error / TRACKING_SIGMA)),
+            "tracking_lin_vel": float(
+                np.exp(-lin_error / TRACKING_LIN_SIGMA),
+            ),
+            "tracking_ang_vel": float(
+                np.exp(-ang_error / TRACKING_ANG_SIGMA),
+            ),
+            "lin_vel_error": float(lin_error),
+            "lin_vel_z": float(local_lin[2] ** 2),
+            "ang_vel_xy": float(local_ang[0] ** 2 + local_ang[1] ** 2),
             "orientation": float(up[0] ** 2 + up[1] ** 2),
             "torques": float(np.sum(torques ** 2)),
             "action_rate": float(np.sum(
                 (action.astype(np.float64) - self.last_action) ** 2,
             )),
             "feet_air_time": feet_air_time,
+            "stand_still": (
+                float(np.sum(np.abs(
+                    self.data.qpos[self._qpos_ids] - DEFAULT_POSE,
+                )))
+                if cmd_magnitude < STAND_STILL_THRESHOLD else 0.0
+            ),
+            "stand_still_joint_velocity": (
+                float(np.sum(np.abs(self.data.qvel[self._qvel_ids])))
+                if cmd_magnitude < STAND_STILL_THRESHOLD else 0.0
+            ),
             "termination": 1.0 if terminated else 0.0,
         }
         scaled = {key: REWARD_WEIGHTS[key] * value for key, value in terms.items()}
@@ -223,6 +246,7 @@ class PupperEnv(gym.Env):
 
     def _get_obs(self):
         rotation = self.data.xmat[self._base_id].reshape(3, 3)
+        lin_vel = rotation.T @ self.data.qvel[0:3]
         ang_vel = rotation.T @ self.data.qvel[3:6]
         gravity = rotation.T @ np.array([0.0, 0.0, -1.0])
         gravity_norm = np.linalg.norm(gravity)
@@ -232,6 +256,7 @@ class PupperEnv(gym.Env):
         joint_angles = self.data.qpos[self._qpos_ids]
         joint_vel = self.data.qvel[self._qvel_ids]
         obs = np.concatenate([
+            lin_vel,
             ang_vel,
             gravity,
             self.cmd.astype(np.float64),
@@ -243,11 +268,7 @@ class PupperEnv(gym.Env):
 
     def _sample_command(self):
         if self.np_random.uniform() < ZERO_CMD_PROB:
-            return self.np_random.uniform(
-                -STAND_STILL_THRESHOLD,
-                STAND_STILL_THRESHOLD,
-                size=3,
-            ).astype(np.float32)
+            return np.zeros(3, dtype=np.float32)
 
         vx = self.np_random.uniform(*CMD_VX_RANGE)
         vy = self.np_random.uniform(*CMD_VY_RANGE)
