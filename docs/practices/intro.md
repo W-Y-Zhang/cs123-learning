@@ -10,6 +10,7 @@ sidebar_position: 1
 ## AMD 专区
 
 - [AUP Learning Cloud 云算力](./amd/aup-learning-cloud)：在浏览器中使用 Ryzen AI APU、JupyterHub、Code Server 与 ROCm 环境，适合课程练习、端侧推理和小规模实验。
+- [ACT 双臂操作训练｜AMD ROCm](./amd/vla-act)：在 Radeon GPU 上完成 ACT BF16 训练、断点续训、20 回合评测与视频导出。
 - [玩转 Pupper 四足机器人](./amd/pupper-control/intro)：AMD 专区旗舰项目，包含 **Pupper Locomotion｜强化学习运动策略**与 **Pupper VLA｜视觉-语言-动作智能**两个方向。
 
 ## 仿真实战

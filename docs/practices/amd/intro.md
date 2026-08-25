@@ -18,6 +18,13 @@ displayed_sidebar: practicesAmdSidebar
 
 ## 旗舰项目
 
+### 🦾 [ACT 双臂操作训练｜AMD ROCm](./vla-act)
+
+在 Radeon AI PRO R9700 上用 BF16 训练 ACT，完成 ALOHA Transfer Cube 双臂方块
+交接。教程包含 ROCm 环境、10k 快速训练、断点续训、20 回合闭环评测与 MP4/GIF。
+
+`AMD`　`ROCm`　`LeRobot`　`ACT`　`ALOHA`
+
 ### 🐕 [玩转 Pupper 四足机器人](./pupper-control/intro)
 
 在 AMD 平台上探索 Pupper 的 **强化学习运动策略**与 **VLA 具身智能**，通过两个完整实验体验从自主运动到视觉语言动作控制的实现过程。

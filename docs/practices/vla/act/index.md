@@ -11,6 +11,12 @@ sidebar_position: 1
 
 上图是成功回合的完整 8 秒 rollout。对应的 [MP4 视频](./figs/act_50k_success.mp4) 也可单独下载。
 
+:::tip[AMD ROCm 版本]
+
+使用 AMD GPU 的读者可以直接进入 [Radeon R9700 上的 10k 实测教程](/docs/practices/amd/vla-act)。
+该版本提供独立的 ROCm 依赖锁、BF16 快速训练配置、20 回合评测、曲线和成功视频。
+:::
+
 ## 你将完成什么
 
 这次实验走通一条完整、可复现的模仿学习链路：
@@ -263,7 +269,8 @@ reward 4 表示完成右臂抓取、抬起、交给左臂的完整流程。评�
 outputs/eval_act_50k_20ep/videos/aloha_0/
 ```
 
-:::note LeRobot 0.6.1 的并行评估问题
+:::note[LeRobot 0.6.1 的并行评估问题]
+
 在本实验环境中，`--eval.batch_size` 大于 1 时，异步 worker 可能因为没有自动注册 `gym_aloha` 而报 `Namespace gym_aloha not found`。使用 `--eval.batch_size=1` 顺序评估可以稳定工作，20 回合约需 1 分钟。
 :::
 

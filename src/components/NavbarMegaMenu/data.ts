@@ -186,6 +186,14 @@ export const megaMenus: MegaMenuConfig[] = [
             keywords: ['AMD', 'AUP', 'Ryzen AI', 'ROCm', '云算力'],
           },
           {
+            icon: '🦾',
+            title: 'ACT 双臂操作训练',
+            description: 'Radeon GPU 上的 ACT BF16 训练、闭环评测与成功视频。',
+            to: '/docs/practices/amd/vla-act',
+            activeBasePath: '/docs/practices/amd/vla-act',
+            keywords: ['AMD', 'ROCm', 'ACT', 'ALOHA', 'LeRobot'],
+          },
+          {
             icon: '🐕',
             title: '玩转 Pupper 四足机器人',
             description: 'AMD 旗舰项目：强化学习运动策略与 VLA 具身智能。',
