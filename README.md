@@ -48,7 +48,8 @@
 
 | 章节 | 简介 | 状态 |
 | :--- | :--- | :--- |
-| [机械臂](docs/practices/robot-arm/placeholder.md) | MuJoCo 抓放、DDPG、LeRobot 数据采集已可用;ROS2 控制、模仿学习、VLA 控制占位中 | 🚧 部分可用 |
+| [机械臂](docs/practices/robot-arm/placeholder.md) | MuJoCo 抓放、DDPG 与 LeRobot 数据采集已可用 | 🚧 部分可用 |
+| [VLA 策略训练](docs/practices/vla/act/index.md) | ACT + ALOHA：数据、训练曲线、checkpoint、20 回合评估与 GIF | ✅ 可用 |
 | [四足机器人](docs/practices/quadruped/placeholder.md) | CS123 课程复刻 8 章可用;sim2sim、sim2real 指南占位中 | 🚧 部分可用 |
 | [双足 / 人形](docs/practices/humanoid/placeholder.md) | 平衡控制、动作跟踪、任务规划 Demo | 🚧 占位中 |
 | [移动操作](docs/practices/mobile-manipulation/) | 导航基础、视觉语言导航、移动操作 Demo | 🚧 占位中 |
@@ -56,21 +57,27 @@
 
 <table align="center">
   <tr>
-    <td align="center" width="33%">
+    <td align="center" width="25%">
       <a href="https://datawhalechina.github.io/dive-into-embodied-ai/docs/practices/quadruped/cs123/intro">
         <img src="assets/lab5_forward_gait_comparison.gif" height="220" alt="CS123 四足步态对比" />
       </a>
       <br/><sub>✅ <b><a href="https://datawhalechina.github.io/dive-into-embodied-ai/docs/practices/quadruped/cs123/intro">从 0 到 1 搭建四足机器人</a></b><br/>CS123 仿真版 · MuJoCo + PPO + LLM 控制</sub>
     </td>
-    <td align="center" width="33%">
+    <td align="center" width="25%">
       <a href="docs/practices/wheel-legged/flamingo-isaaclab/preview.md">
         <img src="assets/hero_swarm.gif" height="220" alt="Flamingo 两轮足在 Isaac Lab 中训练" />
       </a>
       <br/><sub>🔜 <b><a href="docs/practices/wheel-legged/flamingo-isaaclab/preview.md">两轮足 Flamingo · Isaac Lab</a></b><br/>新章预告 · Isaac Lab + PPO / CaT 训练</sub>
     </td>
-    <td align="center" width="33%">
+    <td align="center" width="25%">
       <img src="assets/rebot_act_training.gif" height="220" alt="ReBot-Act 机械臂 ACT 策略训练效果" />
       <br/><sub>✅ <b>ReBot-Act · ACT 训练效果</b><br/>真机视觉模仿学习 · 方块抓取与放置</sub>
+    </td>
+    <td align="center" width="25%">
+      <a href="docs/practices/vla/act/index.md">
+        <img src="docs/practices/vla/act/figs/act_50k_success.gif" height="220" alt="ACT 在 ALOHA 仿真中完成双臂方块交接" />
+      </a>
+      <br/><sub>✅ <b><a href="docs/practices/vla/act/index.md">ACT · ALOHA 双臂交接</a></b><br/>50k 训练 · MuJoCo 20 回合成功率 50%</sub>
     </td>
   </tr>
 </table>
