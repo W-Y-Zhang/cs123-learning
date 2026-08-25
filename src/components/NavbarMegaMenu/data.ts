@@ -30,46 +30,6 @@ export type MegaMenuConfig = {
 
 export const megaMenus: MegaMenuConfig[] = [
   {
-    id: 'overview',
-    label: '零基础入门',
-    activeBasePaths: ['/docs/overview'],
-    panelWidth: 780,
-    columns: [
-      {
-        title: '路径选择',
-        items: [
-          {
-            icon: '🧭',
-            title: '学习路径',
-            description: '从零基础到项目和求职的主线安排。',
-            to: '/docs/overview/learning-path',
-            keywords: ['入门', '路径'],
-            featured: true,
-          },
-        ],
-      },
-      {
-        title: '第一项目',
-        items: [
-          {
-            icon: '🤖',
-            title: '从0到1搭建四足机器人',
-            description: '从一个完整项目入手理解具身智能系统。',
-            to: '/docs/practices/quadruped/cs123/intro',
-            activeBasePath: '/docs/practices/quadruped/cs123',
-            keywords: ['四足', '项目'],
-            featured: true,
-          },
-        ],
-      },
-    ],
-    footer: {
-      text: '先定路径，再用一个项目建立整体感。',
-      ctaLabel: '查看入门路径',
-      to: '/docs/overview/learning-path',
-    },
-  },
-  {
     id: 'foundations',
     label: '理论基础',
     activeBasePaths: ['/docs/foundations'],
@@ -212,98 +172,8 @@ export const megaMenus: MegaMenuConfig[] = [
     id: 'practices',
     label: '项目实战',
     activeBasePaths: ['/docs/practices'],
-    panelWidth: 1240,
+    panelWidth: 1180,
     columns: [
-      {
-        title: '课程入口',
-        items: [
-          {
-            icon: '🐕',
-            title: '从零到一搭建四足机器人',
-            description: 'CS123 四足仿真课程，8 章从 PD 走到 LLM 控制。',
-            to: '/docs/practices/quadruped/cs123/intro',
-            activeBasePath: '/docs/practices/quadruped/cs123',
-            keywords: ['CS123', '四足', 'Pupper'],
-            featured: true,
-          },
-          {
-            icon: '🤗',
-            title: 'LeRobot 中文课程讲义',
-            description: '基于 Hugging Face Robotics Course 整理的中文主线。',
-            to: '/docs/practices/robot-arm/data-collection/lerobot-course',
-            activeBasePath: '/docs/practices/robot-arm/data-collection/lerobot-course',
-            keywords: ['LeRobot', '课程', '机器人学习'],
-            featured: true,
-          },
-          {
-            icon: '🛞',
-            title: '两轮足 Flamingo · Isaac Lab',
-            description: 'Isaac Lab + PPO/CaT 训练 + 跨仿真验证。',
-            to: '/docs/practices/wheel-legged/flamingo-isaaclab/preview',
-            activeBasePath: '/docs/practices/wheel-legged/flamingo-isaaclab',
-            keywords: ['Flamingo', '两轮足', 'Isaac Lab', 'CaT'],
-          },
-        ],
-      },
-      {
-        title: '本体方向',
-        items: [
-          {
-            icon: '🦾',
-            title: '机械臂方向',
-            description: '抓取、数据采集、VLA 控制与真机部署入口。',
-            to: '/docs/practices/robot-arm/placeholder',
-            activeBasePath: '/docs/practices/robot-arm/placeholder',
-            keywords: ['MuJoCo', 'VLA', '模仿学习'],
-          },
-          {
-            icon: '🐕',
-            title: '四足机器人方向',
-            description: '四足课程、sim2sim 与 sim2real 实践入口。',
-            to: '/docs/practices/quadruped/placeholder',
-            activeBasePath: '/docs/practices/quadruped/placeholder',
-            keywords: ['CS123', '四足', 'sim2real'],
-          },
-          {
-            icon: '🚶',
-            title: '双足 / 人形机器人',
-            description: '平衡控制、运动跟踪与任务规划。',
-            to: '/docs/practices/humanoid/placeholder',
-            activeBasePath: '/docs/practices/humanoid',
-            keywords: ['Humanoid', '平衡', '跟踪'],
-          },
-          {
-            icon: '🛞',
-            title: '轮足机器人方向',
-            description: 'Flamingo 两轮足 · Isaac Lab 训练入口。',
-            to: '/docs/practices/wheel-legged/placeholder',
-            activeBasePath: '/docs/practices/wheel-legged',
-            keywords: ['轮足', 'Flamingo', 'Isaac Lab'],
-          },
-        ],
-      },
-      {
-        title: '部署与综合',
-        items: [
-          {
-            icon: '🦾',
-            title: 'SO-101 + LeRobot 真机教程',
-            description: '从硬件连接到策略回放的最小真机流程。',
-            to: '/docs/practices/robot-arm/data-collection/so101-lerobot-real',
-            activeBasePath: '/docs/practices/robot-arm/data-collection/so101-lerobot-real',
-            keywords: ['SO-101', 'LeRobot', '真机'],
-            featured: true,
-          },
-          {
-            icon: '📦',
-            title: '移动操作',
-            description: '导航 + 操作 + 视觉语言导航闭环。',
-            to: '/docs/practices/mobile-manipulation/placeholder',
-            activeBasePath: '/docs/practices/mobile-manipulation',
-            keywords: ['Navigation', 'VLN', 'Mobile Manip'],
-          },
-        ],
-      },
       {
         title: 'AMD 专区',
         items: [
@@ -326,9 +196,77 @@ export const megaMenus: MegaMenuConfig[] = [
           },
         ],
       },
+      {
+        title: '仿真实战',
+        items: [
+          {
+            icon: '🐕',
+            title: '从零到一搭建四足机器人',
+            description: 'CS123 四足仿真课程，8 章从 PD 走到 LLM 控制。',
+            to: '/docs/practices/quadruped/cs123/intro',
+            activeBasePath: '/docs/practices/quadruped/cs123',
+            keywords: ['CS123', 'MuJoCo', 'PPO'],
+            featured: true,
+          },
+          {
+            icon: '🦾',
+            title: 'MuJoCo 机械臂与 DDPG',
+            description: '从环境搭建到 InvertedPendulum、Reacher 与 Pusher 连续控制。',
+            to: '/docs/practices/robot-arm/mujoco-arm-pick-place',
+            activeBasePath: '/docs/practices/robot-arm/ddpg-mujoco',
+            keywords: ['MuJoCo', 'DDPG', '机械臂'],
+          },
+          {
+            icon: '🧠',
+            title: 'ACT 双臂操作训练',
+            description: '用 ALOHA 仿真数据训练 ACT，并完成多回合评估。',
+            to: '/docs/practices/vla/act',
+            activeBasePath: '/docs/practices/vla/act',
+            keywords: ['ACT', 'ALOHA', '模仿学习'],
+          },
+          {
+            icon: '🛞',
+            title: '两轮足 Flamingo · Isaac Lab',
+            description: 'Isaac Lab + PPO/CaT 训练与跨仿真验证。',
+            to: '/docs/practices/wheel-legged/flamingo-isaaclab/preview',
+            activeBasePath: '/docs/practices/wheel-legged/flamingo-isaaclab',
+            keywords: ['Flamingo', 'Isaac Lab', 'Sim2Sim'],
+          },
+        ],
+      },
+      {
+        title: '真机实战',
+        items: [
+          {
+            icon: '🦾',
+            title: 'SO-101 + LeRobot 真机教程',
+            description: '从硬件连通、安全测试到真机动作回放。',
+            to: '/docs/practices/robot-arm/data-collection/so101-lerobot-real',
+            activeBasePath: '/docs/practices/robot-arm/data-collection/so101-lerobot-real',
+            keywords: ['SO-101', 'LeRobot', '真机'],
+            featured: true,
+          },
+          {
+            icon: '🤗',
+            title: 'LeRobot 中文课程讲义',
+            description: '补齐机器人数据、工具链与真机学习流程的前置知识。',
+            to: '/docs/practices/robot-arm/data-collection/lerobot-course',
+            activeBasePath: '/docs/practices/robot-arm/data-collection/lerobot-course',
+            keywords: ['LeRobot', '数据采集', '机器人学习'],
+          },
+          {
+            icon: '🔁',
+            title: 'Sim2Real 指南',
+            description: '从仿真策略走向真机部署的验证入口。',
+            to: '/docs/practices/quadruped/sim2real-guide/placeholder',
+            activeBasePath: '/docs/practices/quadruped/sim2real-guide',
+            keywords: ['Sim2Real', '部署', '验证'],
+          },
+        ],
+      },
     ],
     footer: {
-      text: '先仿真跑通，再做真机验证。',
+      text: '按平台专区、仿真验证与真机部署选择项目。',
       ctaLabel: '查看项目实战',
       to: '/docs/practices/intro',
     },

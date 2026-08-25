@@ -31,29 +31,23 @@
 
 ## 内容大纲
 
-教程分为「零基础入门 + 项目实战 + 理论技能树」三个阶段。章节名后的链接直接指向当前文档或对应目录。
+教程只保留「理论基础 + 项目实战」两大模块。项目实战再按「AMD 专区、仿真实战、真机实战」归类，章节名后的链接直接指向当前文档或对应目录。
 
 状态标记说明:**✅ 可用** = 章节内容完整,可直接阅读;**🚧 部分可用** = 一部分章节有内容、一部分仍是占位;**🚧 占位中** = 目录已建但只有占位页;**⏳ 待补充** = 暂未开工。
 
-### 零基础入门
-
-零基础入门只保留两个入口:先看路径,再用一个完整项目建立整体感。
-
-| 章节 | 简介 | 状态 |
-| :--- | :--- | :--- |
-| [学习路径](docs/overview/learning-path.md) | 从零基础到项目和求职的主线安排 | ✅ 可用 |
-| [从0到1搭建四足机器人](docs/practices/quadruped/cs123/0.intro.md) | 从一个完整仿真项目入手理解具身智能系统 | ✅ 可用 |
-
 ### 项目实战
 
-| 章节 | 简介 | 状态 |
-| :--- | :--- | :--- |
-| [机械臂](docs/practices/robot-arm/placeholder.md) | MuJoCo 抓放、DDPG 与 LeRobot 数据采集已可用 | 🚧 部分可用 |
-| [VLA 策略训练](docs/practices/vla/act/index.md) | ACT + ALOHA：数据、训练曲线、checkpoint、20 回合评估与 GIF | ✅ 可用 |
-| [四足机器人](docs/practices/quadruped/placeholder.md) | CS123 课程复刻 8 章可用;sim2sim、sim2real 指南占位中 | 🚧 部分可用 |
-| [双足 / 人形](docs/practices/humanoid/placeholder.md) | 平衡控制、动作跟踪、任务规划 Demo | 🚧 占位中 |
-| [移动操作](docs/practices/mobile-manipulation/) | 导航基础、视觉语言导航、移动操作 Demo | 🚧 占位中 |
-| [轮足机器人](docs/practices/wheel-legged/flamingo-isaaclab/preview.md) | Flamingo 两轮足 · Isaac Lab 训练 + PPO / CaT 对比 + 跨仿真验证 | 🔜 预告 |
+| 分类 | 章节 | 简介 | 状态 |
+| :--- | :--- | :--- | :--- |
+| AMD 专区 | [AUP Learning Cloud 云算力](docs/practices/amd/aup-learning-cloud.md) | Ryzen AI APU、ROCm、JupyterHub 与 Code Server | ✅ 可用 |
+| AMD 专区 | [玩转 Pupper 四足机器人](docs/practices/amd/pupper-control/intro.md) | AMD 平台上的强化学习运动策略与 VLA 实验 | ✅ 可用 |
+| 仿真实战 | [从 0 到 1 搭建四足机器人](docs/practices/quadruped/cs123/0.intro.md) | MuJoCo、PD、运动学、PPO 与 LLM 控制 | ✅ 可用 |
+| 仿真实战 | [MuJoCo 机械臂与 DDPG](docs/practices/robot-arm/mujoco-arm-pick-place/index.md) | MuJoCo 环境与连续控制实验 | ✅ 可用 |
+| 仿真实战 | [ACT 双臂操作训练](docs/practices/vla/act/index.md) | ACT + ALOHA：训练、评估与结果复现 | ✅ 可用 |
+| 仿真实战 | [两轮足 Flamingo · Isaac Lab](docs/practices/wheel-legged/flamingo-isaaclab/preview.md) | PPO / CaT 训练与跨仿真验证 | 🔜 预告 |
+| 真机实战 | [SO-101 + LeRobot 真机教程](docs/practices/robot-arm/data-collection/so101-lerobot-real/index.md) | 硬件连通、安全测试与动作回放 | ✅ 可用 |
+| 真机实战 | [LeRobot 中文课程讲义](docs/practices/robot-arm/data-collection/lerobot-course/index.md) | 数据集、工具链与真机学习流程的前置知识 | ✅ 可用 |
+| 真机实战 | [Sim2Real 指南](docs/practices/quadruped/sim2real-guide/placeholder.md) | 仿真策略部署与真机验证 | 🚧 占位中 |
 
 <table align="center">
   <tr>
@@ -82,9 +76,9 @@
   </tr>
 </table>
 
-### 理论技能树
+### 理论基础
 
-理论技能树按当前导航的四列组织:大脑、小脑、感知系统、工程底座。当前优先把已有内容并入技能树,空缺模块先保留占位。
+理论基础按当前导航的四列组织:大脑、小脑、感知系统、工程底座。当前优先把已有内容并入技能树,空缺模块先保留占位。
 
 #### 大脑：智能决策
 

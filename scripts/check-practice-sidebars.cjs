@@ -82,6 +82,15 @@ assert.ok(sidebars.practicesLerobotCourseSidebar, 'practicesLerobotCourseSidebar
 assert.ok(sidebars.practicesSo101CourseSidebar, 'practicesSo101CourseSidebar should exist');
 assert.ok(sidebars.practicesAmdSidebar, 'practicesAmdSidebar should exist');
 
+const overviewCategories = sidebars.practicesOverviewSidebar.filter(
+  (item) => item && typeof item === 'object' && item.type === 'category',
+);
+assert.deepEqual(
+  overviewCategories.map((category) => category.label),
+  ['AMD 专区', '仿真实战', '真机实战'],
+  'Practice overview should use the three top-level project groups',
+);
+
 const cs123Refs = collectSidebarRefs(sidebars.practicesCs123CourseSidebar);
 assert.ok(
   cs123Refs.includes('practices/quadruped/cs123/intro'),
