@@ -15,12 +15,12 @@ const config: Config = {
   tagline: '动手学具身智能',
   favicon: 'img/favicon.svg',
 
-  url: 'https://datawhalechina.github.io',
-  baseUrl: '/dive-into-embodied-ai/',
+  url: 'https://w-y-zhang.github.io',
+  baseUrl: '/cs123-learning/',
   trailingSlash: false,
 
-  organizationName: 'datawhalechina',
-  projectName: 'dive-into-embodied-ai',
+  organizationName: 'W-Y-Zhang',
+  projectName: 'cs123-learning',
 
   onBrokenLinks: 'throw',
 
@@ -111,7 +111,7 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://github.com/datawhalechina/dive-into-embodied-ai',
+          href: 'https://github.com/W-Y-Zhang/cs123-learning',
           position: 'right',
           className: 'header-github-link',
           'aria-label': 'GitHub repository',
@@ -133,7 +133,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub Discussions',
-              href: 'https://github.com/datawhalechina/dive-into-embodied-ai/discussions',
+              href: 'https://github.com/datawhalechina/cs123-learning/discussions',
             },
             {
               label: 'Datawhale',
@@ -146,7 +146,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/datawhalechina/dive-into-embodied-ai',
+              href: 'https://github.com/W-Y-Zhang/cs123-learning',
             },
           ],
         },
