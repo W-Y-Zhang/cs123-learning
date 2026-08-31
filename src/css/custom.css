@@ -684,8 +684,61 @@ body {
   z-index: 1;
 }
 
-.theme-doc-markdown {
+.theme-doc-markdown,
+.theme-doc-markdown.markdown {
+  width: 100%;
   max-width: 860px;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Keep every direct Markdown block in the same readable column. */
+.theme-doc-markdown.markdown > * {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Display equations can be wider than the reading column. Keep them readable
+ * and let the reader scroll the equation instead of clipping or shrinking it. */
+.theme-doc-markdown.markdown mjx-container[display='true'] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.2rem 0;
+  text-align: center;
+}
+
+.theme-doc-markdown.markdown mjx-container[display='true'] > svg {
+  max-width: none;
+}
+
+.theme-doc-markdown.markdown mjx-container:not([display='true']) {
+  max-width: 100%;
+}
+
+.theme-doc-markdown.markdown > p > img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+.theme-doc-markdown.markdown .katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.2rem 0;
+}
+
+.theme-doc-markdown.markdown .katex-display > .katex {
+  display: inline-block;
+  min-width: max-content;
 }
 
 .theme-doc-markdown.markdown > h1 {
