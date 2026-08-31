@@ -1,5 +1,5 @@
 # cs123-learning
-Personal notes and code while working through Stanford CS123
+Notes and code while working through Stanford CS123
 
 ---
 
