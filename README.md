@@ -1,3 +1,8 @@
+# cs123-learning
+Personal notes and code while working through Stanford CS123
+
+---
+
 <div align="center">
     <img src="static/img/career.webp" width="100%" alt="Dive into Embodied AI 横幅" />
 </div>
