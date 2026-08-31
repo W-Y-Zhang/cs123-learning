@@ -21,3 +21,28 @@ Stanford CS123 机器人学与控制学习笔记，包含四足机器人仿真�
 ## 配图
 
 配图统一存放在 `docs/practices/quadruped/cs123/figs/`，课件使用相对路径引用，打开 Markdown 文件时会自动显示。
+
+
+## English
+
+Study notes for Stanford CS123 robotics and control, covering quadruped simulation, actuators and PD control, kinematics, gait control, reinforcement learning, language control, and visual perception.
+
+### Scope
+
+This repository contains only the CS123 course notes and figures. All Markdown files can be read directly on GitHub.
+
+### Chapters
+
+0. [Introduction](docs/practices/quadruped/cs123/0.intro.md)
+1. [Actuators and PD Control](docs/practices/quadruped/cs123/1.pid-control.md)
+2. [Forward Kinematics](docs/practices/quadruped/cs123/2.forward-kinematics.md)
+3. [Inverse Kinematics](docs/practices/quadruped/cs123/3.inverse-kinematics.md)
+4. [Building a Quadruped Robot](docs/practices/quadruped/cs123/4.quadruped-mjcf.md)
+5. [Gait Control](docs/practices/quadruped/cs123/5.gait-control.md)
+6. [Reinforcement Learning for Gait](docs/practices/quadruped/cs123/6.rl-gait.md)
+7. [Language Control](docs/practices/quadruped/cs123/7.llm-control.md)
+8. [Visual Perception](docs/practices/quadruped/cs123/8.perception.md)
+
+### Figures
+
+Figures are stored in `docs/practices/quadruped/cs123/figs/` and referenced with relative paths, so they display automatically when the Markdown files are opened on GitHub.
