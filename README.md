@@ -4,7 +4,7 @@ Stanford CS123 机器人学与控制学习笔记，包含四足机器人仿真�
 
 ## 内容
 
-本仓库只保留 CS123 相关课件和配图，Markdown 文件可以直接在 GitHub 中阅读。
+本仓库只保留 CS123 相关课件，代码和配图，Markdown 文件可以直接在 GitHub 中阅读。
 
 ## 章节
 
@@ -29,7 +29,7 @@ Study notes for Stanford CS123 robotics and control, covering quadruped simulati
 
 ### Scope
 
-This repository contains only the CS123 course notes and figures. All Markdown files can be read directly on GitHub.
+This repository contains only the CS123 course notes, codes and figures. All Markdown files can be read directly on GitHub.
 
 ### Chapters
 
