@@ -54,10 +54,10 @@ print(f'max |p_ours - p_mj| = {max_err:.2e}')
 
 with mujoco.viewer.launch_passive(model, data) as v:
     while v.is_running():
-        # 假设我们在 Python 里用自己的 FK 算末端位置
+        # Assume we compute the end-effector position using our own FK in Python
         p = fk_planar(data.qpos[:3])[:3, 3]
 
-        # 清空旧的调试几何再画
+        # Clear the old debug geometry and redraw it
         v.user_scn.ngeom = 0
         mujoco.mjv_initGeom(
             v.user_scn.geoms[0],
